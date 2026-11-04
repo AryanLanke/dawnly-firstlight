@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en" style=""><head></head><body><svg aria-hidden="true" class="inline-defs-container" style="position:absolute;width:0;height:0;overflow:hidden"></svg>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Dawnly – Up before your alarm?</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet"/>
+<style>
+/* CSS Reset & Minimal High-End Design Tokens */
+:root {
+  --wall: #F5F7FA;
+  --text: #090A0D;
+  --soft: rgba(9, 10, 13, 0.62);
+  --glass: rgba(255, 255, 255, 0.65);
+  --glass-strong: rgba(255, 255, 255, 0.88);
+  --glass-tint: rgba(255, 255, 255, 0.45);
+  --edge: rgba(255, 255, 255, 0.85);
+  --edge-soft: rgba(0, 0, 0, 0.06);
+  --hi: rgba(255, 255, 255, 0.95);
+  --lift: 0 16px 36px -4px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03);
+  --lift-sm: 0 6px 18px -2px rgba(0, 0, 0, 0.05);
+  --line: rgba(0, 0, 0, 0.07);
+  --track: rgba(0, 0, 0, 0.09);
+  --accent: #0A0A0E;
+  --accent-hover: #1E1F24;
+  --on-accent: #ffffff;
+  --star: #94A3B8;
+  --field: rgba(255, 255, 255, 0.8);
+  --phone-shadow: 0 32px 75px -15px rgba(0, 0, 0, 0.22), 0 10px 24px rgba(0, 0, 0, 0.08);
+  --notif-bg: #2B2D31;
+  --notif-text: #FFFFFF;
+  --notif-soft: #A3A7AF;
+}
+
+[data-theme="dark"] {
+  --wall: #070709;
+  --text: #F4F4F6;
+  --soft: rgba(244, 244, 246, 0.62);
+  --glass: rgba(18, 18, 22, 0.65);
+  --glass-strong: rgba(24, 24, 30, 0.85);
+  --glass-tint: rgba(255, 255, 255, 0.04);
+  --edge: rgba(255, 255, 255, 0.12);
+  --edge-soft: rgba(255, 255, 255, 0.06);
+  --hi: rgba(255, 255, 255, 0.18);
+  --lift: 0 20px 48px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --lift-sm: 0 10px 24px rgba(0, 0, 0, 0.4);
+  --line: rgba(255, 255, 255, 0.1);
+  --track: rgba(255, 255, 255, 0.14);
+  --accent: #FFFFFF;
+  --accent-hover: #E2E4E9;
+  --on-accent: #0A0A0E;
+  --star: #E2E8F0;
+  --field: rgba(255, 255, 255, 0.06);
+  --phone-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 255, 255, 0.04);
+  --notif-bg: #202226;
+  --notif-text: #FFFFFF;
+  --notif-soft: #9BA0A8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--wall);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Atmospheric Ambient Sky */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(180deg, #E2ECF8 0%, #EDF3FA 50%, #F5F7FA 100%);
+  transition: opacity 0.5s ease;
+}
+
+/* Subtle Sun Glow (Light) */
+.sun {
+  position: absolute;
+  right: -50px;
+  top: -50px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 250, 235, 0.95) 0%, rgba(255, 243, 214, 0.72) 32%, rgba(255, 235, 190, 0.35) 55%, rgba(255, 243, 214, 0) 75%);
+  filter: blur(28px);
+  pointer-events: none;
+  animation: sunPulse 12s ease-in-out infinite alternate;
+}
+@keyframes sunPulse {
+  0% { transform: scale(0.96) translate(0, 0); opacity: 0.85; }
+  100% { transform: scale(1.06) translate(-8px, 8px); opacity: 1; }
+}
+
+/* Fluffy clouds matching the desktop edition */
+.cloud {
+  position: absolute;
+  height: 44px;
+  border-radius: 44px;
+  background: #fff;
+  opacity: .9;
+  filter: blur(5px);
+  animation: drift linear infinite;
+  will-change: transform;
+}
+.cloud::before, .cloud::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+}
+.cloud::before {
+  width: 55px;
+  height: 55px;
+  top: -24px;
+  left: 28px;
+}
+.cloud::after {
+  width: 42px;
+  height: 42px;
+  top: -16px;
+  left: 72px;
+}
+
+.c1 {
+  width: 190px;
+  top: 22%;
+  left: -200px;
+  animation-duration: 70s;
+}
+.c2 {
+  width: 140px;
+  top: 58%;
+  left: -160px;
+  animation-duration: 90s;
+  animation-delay: -40s;
+  opacity: .75;
+}
+.c3 {
+  width: 220px;
+  top: 84%;
+  left: -240px;
+  animation-duration: 80s;
+  animation-delay: -20s;
+}
+
+@keyframes drift {
+  to {
+    transform: translateX(calc(100vw + 300px));
+  }
+}
+
+/* Dark sky components */
+.moon, .star, .twinkle { display: none; }
+[data-theme="dark"] .sky {
+  background: radial-gradient(75% 50% at 85% 10%, rgba(35, 40, 52, 0.4), transparent 72%),
+              radial-gradient(60% 40% at 15% 85%, rgba(24, 26, 36, 0.35), transparent 75%),
+              #070709;
+}
+[data-theme="dark"] .sun, [data-theme="dark"] .cloud { display: none; }
+[data-theme="dark"] .moon, [data-theme="dark"] .star, [data-theme="dark"] .twinkle { display: block; }
+
+.moon {
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(235, 240, 252, 0.7) 0%, rgba(200, 215, 245, 0.2) 28%, rgba(200, 215, 245, 0) 70%);
+  filter: blur(18px);
+}
+
+.star {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 140px;
+  height: 1.5px;
+  border-radius: 2px;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, var(--star));
+  transform: rotate(145deg);
+  transform-origin: left;
+  animation: shoot var(--d, 8s) linear var(--w, 0s) infinite;
+}
+.star::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px 2px var(--star);
+}
+@keyframes shoot {
+  0% { opacity: 0; transform: rotate(145deg) translateX(0); }
+  4% { opacity: 0.9; }
+  26% { opacity: 0; transform: rotate(145deg) translateX(550px); }
+  100% { opacity: 0; }
+}
+
+.twinkle {
+  position: absolute;
+  width: 2.5px;
+  height: 2.5px;
+  border-radius: 50%;
+  background: #ffffff;
+  opacity: 0.6;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+  animation: tw 3.5s ease-in-out infinite alternate;
+}
+@keyframes tw { to { opacity: 0.15; transform: scale(0.6); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud, .star, .twinkle, .sun { animation: none !important; }
+}
+
+/* Polished Liquid Glass UI */
+.glass {
+  position: relative;
+  background: var(--glass);
+  border: 1px solid var(--edge);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  box-shadow: inset 0 1px 1px var(--hi), var(--lift);
+  border-radius: 24px;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-pill {
+  background: var(--glass-strong);
+  border: 1px solid var(--edge);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: inset 0 1px 0 var(--hi), var(--lift-sm);
+  border-radius: 999px;
+}
+
+/* Master Layout */
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px 20px 56px;
+}
+
+/* Navigation Bar */
+header.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 8px 10px;
+  margin-bottom: 28px;
+}
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  background: #ffffff;
+}
+.brand-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.brand-name {
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.025em;
+}
+
+.theme-toggle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--edge);
+  background: var(--glass-strong);
+  color: var(--text);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 1px 0 var(--hi), var(--lift-sm);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+}
+.theme-toggle-btn:hover {
+  transform: scale(1.05);
+}
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+.theme-toggle-btn svg {
+  width: 19px;
+  height: 19px;
+}
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-sun { display: block; }
+[data-theme="dark"] .icon-moon { display: none; }
+
+/* Hero Section */
+.hero-content {
+  text-align: center;
+  padding: 14px 4px 6px;
+}
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 18px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+.badge-pill .pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+h1.headline {
+  font-size: 2.75rem;
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: 16px;
+}
+.subtext {
+  color: var(--soft);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  max-width: 32ch;
+  margin: 0 auto;
+  font-weight: 450;
+}
+
+/* Download CTA Area (Solid Deep Black) */
+.download-area {
+  margin-top: 26px;
+  text-align: center;
+}
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 17px 24px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: inherit;
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s;
+}
+.btn-cta:hover {
+  transform: translateY(-2px);
+  background: var(--accent-hover);
+}
+.btn-cta:active {
+  transform: scale(0.98);
+}
+.btn-cta svg {
+  width: 20px;
+  height: 20px;
+}
+.file-meta {
+  color: var(--soft);
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-top: 12px;
+}
+
+/* Clean Download Counter Pill */
+.download-count-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  margin-top: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Exact Android System Notification Card from IMAGE_6 */
+.alarm-off-floating-card {
+  margin: 22px auto 0;
+  max-width: 360px;
+  padding: 14px 18px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  background: var(--notif-bg);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease;
+  color: var(--notif-text);
+  text-align: left;
+}
+.alarm-off-floating-card:hover {
+  transform: translateY(-2px);
+}
+.notif-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.notif-left-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.notif-app-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.notif-app-badge svg {
+  width: 17px;
+  height: 17px;
+}
+.notif-sender {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--notif-soft);
+  letter-spacing: -0.01em;
+}
+.notif-chevron {
+  color: var(--notif-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.notif-chevron svg {
+  width: 16px;
+  height: 16px;
+}
+.notif-content-area {
+  margin-top: 10px;
+  padding-left: 38px;
+}
+.notif-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #FFFFFF;
+}
+.notif-body {
+  font-size: 0.84rem;
+  color: var(--notif-soft);
+  line-height: 1.4;
+  margin-top: 3px;
+}
+
+/* CLEAN PHONE SHOWCASE */
+.showcase-wrapper {
+  margin: 36px auto 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.phone-frame {
+  position: relative;
+  width: 285px;
+  height: 590px;
+  border-radius: 46px;
+  padding: 8px;
+  background: #0E1015;
+  box-shadow: var(--phone-shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.phone-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 38px;
+  overflow: hidden;
+  background: #000;
+}
+.phone-screen-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: opacity 0.4s ease;
+}
+.phone-screen-img.light-shot {
+  opacity: 1;
+}
+.phone-screen-img.dark-shot {
+  opacity: 0;
+}
+[data-theme="dark"] .phone-screen-img.light-shot {
+  opacity: 0;
+}
+[data-theme="dark"] .phone-screen-img.dark-shot {
+  opacity: 1;
+}
+
+/* General Sections */
+section {
+  margin-top: 48px;
+}
+h2.section-title {
+  font-size: 1.48rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 6px;
+}
+p.section-subtitle {
+  color: var(--soft);
+  font-size: 0.94rem;
+  line-height: 1.5;
+  margin-bottom: 18px;
+  font-weight: 450;
+}
+
+/* Story Card */
+.story-card {
+  padding: 24px;
+  border-radius: 24px;
+  font-size: 0.98rem;
+  line-height: 1.62;
+}
+.story-card p + p {
+  margin-top: 12px;
+}
+.story-card .soft-text {
+  color: var(--soft);
+}
+
+/* Feature Grid */
+.cards-grid {
+  display: grid;
+  gap: 14px;
+}
+.feature-card {
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  border-radius: 24px;
+}
+.feature-card h3 {
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+.feature-card p {
+  color: var(--soft);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* Gentle Reminders Feature Section */
+.reminders-card {
+  padding: 24px;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.reminders-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.reminders-interactive-card {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--edge);
+  border-radius: 20px;
+  padding: 16px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+[data-theme="dark"] .reminders-interactive-card {
+  background: rgba(14, 15, 20, 0.65);
+}
+.reminder-sample-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: var(--glass-strong);
+  border: 1px solid var(--edge);
+  margin-bottom: 10px;
+}
+.reminder-sample-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+.reminder-sample-desc {
+  font-size: 0.78rem;
+  color: var(--soft);
+  margin-top: 2px;
+}
+.reminder-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.reminder-chip {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--edge);
+  color: var(--text);
+}
+.reminder-chip.active {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: transparent;
+}
+
+/* Steps Guides */
+.steps-container {
+  padding: 8px 22px;
+  border-radius: 24px;
+}
+.step-row {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  align-items: flex-start;
+}
+.step-row + .step-row {
+  border-top: 1px solid var(--line);
+}
+.step-number {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  display: grid;
+  place-items: center;
+  font-size: 0.84rem;
+  font-weight: 800;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+.step-content h4 {
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.step-content p {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--soft);
+  margin-top: 4px;
+}
+.step-content p b {
+  color: var(--text);
+  font-weight: 600;
+}
+.optional-tag {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--glass-strong);
+  border: 1px solid var(--edge);
+  margin-left: 6px;
+  vertical-align: 1px;
+  color: var(--soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.info-note {
+  color: var(--soft);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  margin-top: 14px;
+  padding-left: 4px;
+}
+
+/* Privacy Tags */
+.privacy-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.privacy-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.privacy-tag svg {
+  width: 16px;
+  height: 16px;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+/* Footer */
+footer {
+  margin-top: 56px;
+  text-align: center;
+  color: var(--soft);
+  font-size: 0.82rem;
+  line-height: 1.8;
+  padding-bottom: 20px;
+}
+footer a {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text);
+  transition: opacity 0.2s;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Desktop & Tablet Adaptations (>= 900px) */
+@media (min-width: 900px) {
+  .wrap {
+    max-width: 1140px;
+    padding: 28px 48px 70px;
+  }
+  
+  header.top-nav {
+    padding: 10px 18px 10px 14px;
+    margin-bottom: 32px;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: 48px;
+    align-items: center;
+    padding: 10px 0 30px;
+  }
+  .hero-content {
+    text-align: left;
+    padding: 0;
+  }
+  .subtext {
+    margin: 0;
+    max-width: 44ch;
+  }
+  h1.headline {
+    font-size: 3.8rem;
+    line-height: 1.04;
+  }
+  .download-area {
+    text-align: left;
+    max-width: 420px;
+  }
+  .alarm-off-floating-card {
+    margin: 24px 0 0;
+    max-width: 390px;
+  }
+
+  .showcase-wrapper {
+    margin: 0;
+  }
+  .phone-frame {
+    width: 310px;
+    height: 640px;
+    border-radius: 50px;
+    padding: 9px;
+  }
+  .phone-inner {
+    border-radius: 42px;
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .split-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+</style>
+<style id="mobile-declutter-style">
+.wrap {
+  max-width: 430px !important;
+  padding: 16px 20px 48px !important;
+}
+
+/* Hero text sizing */
+h1.headline {
+  font-size: 2.25rem !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.035em !important;
+  margin-bottom: 12px !important;
+}
+.subtext {
+  font-size: 0.98rem !important;
+  line-height: 1.48 !important;
+  max-width: 32ch !important;
+}
+
+/* Scaled down phone frame for mobile */
+.showcase-wrapper {
+  margin: 28px auto 8px !important;
+}
+.phone-frame {
+  width: 240px !important;
+  height: 495px !important;
+  border-radius: 40px !important;
+  padding: 7px !important;
+  box-shadow: 0 24px 60px -10px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.14) !important;
+}
+.phone-inner {
+  border-radius: 33px !important;
+}
+
+/* Compact notification card preview */
+.alarm-off-floating-card {
+  margin: 18px auto 0 !important;
+  max-width: 330px !important;
+  padding: 12px 16px !important;
+  border-radius: 20px !important;
+}
+.notif-content-area {
+  margin-top: 6px !important;
+  padding-left: 36px !important;
+}
+
+/* Clean How It Works Cards */
+.cards-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+}
+.feature-card {
+  padding: 14px 18px !important;
+  border-radius: 18px !important;
+}
+.feature-card h3 {
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+}
+.feature-card p {
+  font-size: 0.84rem !important;
+  line-height: 1.45 !important;
+  margin-top: 3px !important;
+}
+
+/* Section margin tightening */
+section {
+  margin-top: 36px !important;
+}
+h2.section-title {
+  font-size: 1.32rem !important;
+  letter-spacing: -0.025em !important;
+  margin-bottom: 4px !important;
+}
+p.section-subtitle {
+  font-size: 0.86rem !important;
+  margin-bottom: 14px !important;
+}
+
+/* Story card mobile breathing room */
+.story-card {
+  padding: 18px 20px !important;
+  border-radius: 20px !important;
+  font-size: 0.9rem !important;
+  line-height: 1.56 !important;
+}
+
+/* Compact Steps */
+.steps-container {
+  padding: 6px 18px !important;
+  border-radius: 20px !important;
+}
+.step-row {
+  padding: 12px 0 !important;
+  gap: 12px !important;
+}
+.step-number {
+  width: 24px !important;
+  height: 24px !important;
+  font-size: 0.76rem !important;
+}
+.step-content h4 {
+  font-size: 0.88rem !important;
+}
+.step-content p {
+  font-size: 0.8rem !important;
+  line-height: 1.45 !important;
+}
+
+/* Privacy tags compact layout */
+.privacy-tags {
+  gap: 8px !important;
+}
+.privacy-tag {
+  padding: 7px 13px !important;
+  font-size: 0.8rem !important;
+  border-radius: 999px !important;
+}
+.privacy-tag svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* Reminders compact card */
+.reminders-card {
+  padding: 18px 20px !important;
+  border-radius: 20px !important;
+}
+.reminders-header {
+  margin-bottom: 14px !important;
+  gap: 12px !important;
+}
+.reminder-interactive-card {
+  padding: 12px !important;
+  border-radius: 16px !important;
+}
+
+/* Updated crisper clouds & faster drift animation */
+.cloud {
+  filter: blur(1.5px) !important;
+  opacity: 0.95 !important;
+  background: #ffffff !important;
+}
+.cloud::before, .cloud::after {
+  background: #ffffff !important;
+}
+.c1 {
+  animation-duration: 22s !important;
+}
+.c2 {
+  animation-duration: 28s !important;
+  animation-delay: -14s !important;
+  opacity: 0.9 !important;
+}
+.c3 {
+  animation-duration: 25s !important;
+  animation-delay: -8s !important;
+}
+@keyframes drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(100vw + 300px));
+  }
+}
+</style>
+<!-- Dynamic Sky Canvas Background with Live Drifting Clouds -->
+<div aria-hidden="true" class="sky">
+<div class="sun"></div>
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+<div class="cloud c3"></div>
+<div class="moon"></div>
+<i class="star" style="--x: 68%; --y: 12%; --d: 8.5s;"></i>
+<i class="star" style="--x: 38%; --y: 28%; --d: 10s; --w: 3.2s;"></i>
+<i class="star" style="--x: 88%; --y: 52%; --d: 9s; --w: 5.5s;"></i>
+<b class="twinkle" style="left: 14%; top: 18%;"></b>
+<b class="twinkle" style="left: 32%; top: 9%; animation-delay: 1.1s;"></b>
+<b class="twinkle" style="left: 64%; top: 38%; animation-delay: 2.2s;"></b>
+<b class="twinkle" style="left: 82%; top: 74%; animation-delay: 0.7s;"></b>
+<b class="twinkle" style="left: 24%; top: 66%; animation-delay: 1.8s;"></b>
+</div>
+<div class="wrap">
+<!-- Top Bar Navigation with official SVG logo -->
+<header class="top-nav glass-pill">
+<a class="brand-group" href="#">
+<div class="brand-icon">
+<!-- Dawnly Vector Logo -->
+<svg viewbox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="nav-white" x1=".2" x2=".85" y1=".1" y2=".95">
+<stop offset="0" stop-color="#A3C4FF"></stop>
+<stop offset=".5" stop-color="#88AEFB"></stop>
+<stop offset="1" stop-color="#6990EC"></stop>
+</lineargradient>
+<radialgradient cx=".38" cy=".34" id="nav-yolk" r=".75">
+<stop offset="0" stop-color="#FFE68A"></stop>
+<stop offset=".55" stop-color="#FFC21F"></stop>
+<stop offset="1" stop-color="#F09E00"></stop>
+</radialgradient>
+</defs>
+<rect fill="#EEF4FF" height="1024" width="1024"></rect>
+<path d="M497 260 C523.7 260.0 563.7 268.0 587 274 C610.3 280.0 619.5 293.0 637 296 C654.5 299.0 675.0 285.7 692 292 C709.0 298.3 730.2 317.0 739 334 C747.8 351.0 742.8 372.3 745 394 C747.2 415.7 748.0 441.5 752 464 C756.0 486.5 770.7 505.7 769 529 C767.3 552.3 750.3 583.2 742 604 C733.7 624.8 722.3 634.8 719 654 C715.7 673.2 730.7 701.7 722 719 C713.3 736.3 687.0 753.0 667 758 C647.0 763.0 622.0 751.0 602 749 C582.0 747.0 565.3 742.5 547 746 C528.7 749.5 513.7 770.0 492 770 C470.3 770.0 440.3 756.0 417 746 C393.7 736.0 372.8 716.0 352 710 C331.2 704.0 308.2 721.0 292 710 C275.8 699.0 258.3 665.8 255 644 C251.7 622.2 271.3 605.7 272 579 C272.7 552.3 254.0 510.7 259 484 C264.0 457.3 287.7 438.2 302 419 C316.3 399.8 333.3 387.8 345 369 C356.7 350.2 358.3 321.8 372 306 C385.7 290.2 406.2 281.7 427 274 C447.8 266.3 470.3 260.0 497 260Z" fill="url(#nav-white)"></path>
+<circle cx="494" cy="514" fill="url(#nav-yolk)" r="100"></circle>
+</svg>
+</div>
+<span class="brand-name">Dawnly</span>
+</a>
+<button aria-label="Toggle light and dark mode" class="theme-toggle-btn" onclick="flip()">
+<!-- Moon Icon (Light Mode view) -->
+<svg class="icon-moon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+</svg>
+<!-- Sun Icon (Dark Mode view) -->
+<svg class="icon-sun" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="4.5"></circle>
+<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+</svg>
+</button>
+</header>
+<!-- Hero & Phone Mockup Presentation -->
+<div class="hero-grid">
+<div>
+<div class="hero-content">
+<div class="badge-pill glass-pill">
+<span class="pill-dot"></span>
+<span class="">Free · No account · Works offline</span>
+</div>
+<h1 class="headline">Up before your alarm?</h1>
+<p class="subtext">Dawnly notices you're already awake and turns your alarm off automatically.</p>
+</div>
+<!-- Solid Black Download Button & Clean Live Counter -->
+<div class="download-area">
+<a class="btn-cta" href="#download" id="download-btn" onclick="triggerDownload(event)">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" viewbox="0 0 24 24">
+<path d="M12 3v13m0 0l-5-5m5 5l5-5M5 21h14"></path>
+</svg>
+Download APK
+</a>
+<p class="file-meta">Version 1.5.4 · Android 11+ · 3.2 MB · APK file</p>
+<div>
+<span class="download-count-pill glass-pill">
+<span class=""><b id="live-counter">1,234</b> downloads</span>
+</span>
+</div>
+</div>
+<!-- Real Android System Notification Card -->
+<div class="alarm-off-floating-card glass" style="background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(255, 255, 255, 0.85); box-shadow: rgba(0, 0, 0, 0.1) 0px 18px 40px -8px, rgba(0, 0, 0, 0.04) 0px 4px 14px; color: rgb(14, 30, 69);">
+<div class="notif-top-row">
+<div class="notif-left-meta">
+<div class="notif-app-badge" style="background: #EEF4FF; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);"><svg style="width: 100%; height: 100%; border-radius: 50%; display: block;" viewbox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="notif-white" x1=".2" x2=".85" y1=".1" y2=".95"><stop offset="0" stop-color="#A3C4FF"></stop><stop offset=".5" stop-color="#88AEFB"></stop><stop offset=".5" stop-color="#6990EC"></stop></lineargradient><radialgradient cx=".38" cy=".34" id="notif-yolk" r=".75"><stop offset="0" stop-color="#FFE68A"></stop><stop offset=".55" stop-color="#FFC21F"></stop><stop offset="1" stop-color="#F09E00"></stop></radialgradient></defs><rect fill="#EEF4FF" height="1024" width="1024"></rect><path d="M497 260 C523.7 260.0 563.7 268.0 587 274 C610.3 280.0 619.5 293.0 637 296 C654.5 299.0 675.0 285.7 692 292 C709.0 298.3 730.2 317.0 739 334 C747.8 351.0 742.8 372.3 745 394 C747.2 415.7 748.0 441.5 752 464 C756.0 486.5 770.7 505.7 769 529 C767.3 552.3 750.3 583.2 742 604 C733.7 624.8 722.3 634.8 719 654 C715.7 673.2 730.7 701.7 722 719 C713.3 736.3 687.0 753.0 667 758 C647.0 763.0 622.0 751.0 602 749 C582.0 747.0 565.3 742.5 547 746 C528.7 749.5 513.7 770.0 492 770 C470.3 770.0 440.3 756.0 417 746 C393.7 736.0 372.8 716.0 352 710 C331.2 704.0 308.2 721.0 292 710 C275.8 699.0 258.3 665.8 255 644 C251.7 622.2 271.3 605.7 272 579 C272.7 552.3 254.0 510.7 259 484 C264.0 457.3 287.7 438.2 302 419 C316.3 399.8 333.3 387.8 345 369 C356.7 350.2 358.3 321.8 372 306 C385.7 290.2 406.2 281.7 427 274 C447.8 266.3 470.3 260.0 497 260Z" fill="url(#notif-white)"></path><circle cx="494" cy="514" fill="url(#nav-yolk)" r="100"></circle></svg></div>
+<span class="notif-sender" style="color: rgba(14, 30, 69, 0.65); font-weight: 600;">Dawnly • now</span>
+</div>
+<div class="notif-chevron" style="color: rgba(14, 30, 69, 0.55);">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24">
+<polyline points="18 15 12 9 6 15"></polyline>
+</svg>
+</div>
+</div>
+<div class="notif-content-area">
+<div class="notif-title" style="color: #0E1E45; font-size: 1rem;">Alarm's off</div>
+<div class="notif-body" style="color: rgba(14, 30, 69, 0.68); font-size: 0.86rem;">Your 7:45 pm alarm is off. You're all set!</div>
+</div>
+</div>
+</div>
+<!-- Clean Phone Showcase -->
+<div class="showcase-wrapper">
+<div aria-label="Dawnly app live preview" class="phone-frame">
+<div class="phone-inner">
+<!-- Light Theme Screen -->
+<img alt="Dawnly app light mode screen showing Watching quietly and status checklist" class="phone-screen-img light-shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRlQ2haJ8sObHBaXeSuJXdReRIbMgqurhzDk0c9sStVtIAmbXt75OJpAkBe5FrOe_3WB3ofkZji26tC584bHJMqVrYlq8Z6sU85cTPpbDXDRLU-W0eHnPlp-Lm5IkPsEOy6Ra0rPFuvFEiqY6W-5LZum85Pkm9bNTYxiLZh7I7jm4mmD0rz3-sKjrgixgPwbjcCl39jAIfEwAX46HQNb7iSDzixX_rD-7X4M76WWFdO2rGdclRWefM"/>
+<!-- Dark Theme Screen -->
+<img alt="Dawnly app dark obsidian mode screen showing Watching quietly and checklist" class="phone-screen-img dark-shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwbUGb6epeJsVRsLnr4YQy7xtAxMmIMPrrC5vEyVNvCeDmoq-Gsb75nUV7O-uO4M4Hl3agw2gR0fyJFzgMYGBTgkDtsVa3UCowU1zoM6qTIygJxGiSf5zakZFykNJdMjveMokN7lP_g4f_FaqgTkiYnHB0eoAxAWHrVgox9e4lEp_6HzQyiWIQllB19PTLnWgohlIlCheWubZe3WuvurqjlzOjQgT-LoEW7XsBjH1U6fW_umQExiJH"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Made for Early Risers -->
+<section>
+<h2 class="section-title">Made for people who wake up before their alarm</h2>
+<div class="story-card glass"><p class="">You set an alarm for 5:30 AM, or midday, or before a night shift. You wake up early on your own, grab your phone, and start moving. Then at the scheduled time, the alarm blares anyway—waking the whole room or breaking your flow.</p>
+<p class="soft-text">Dawnly fixes that. It works quietly with the alarms already in your Clock app at any hour, checking if you're active only in the window right before your alarm rings. When it sees you're up, it offers to dismiss it with a single tap. Plus, gentle micro-reminders help you build recurring waking habits throughout the day without disruptive noises.</p></div>
+</section>
+<!-- How It Works -->
+<section>
+<h2 class="section-title">How it works</h2>
+<p class="section-subtitle">Three steps, all on your phone. Nothing leaves it.</p>
+<div class="cards-grid"><div class="feature-card glass">
+<div>
+<h3 class="">Reads your next alarm</h3>
+<p class="">Works with the Clock app you already use. Day or night, Dawnly never sets alarms of its own.</p>
+</div>
+</div>
+<div class="feature-card glass">
+<div>
+<h3 class="">Watches only before it</h3>
+<p class="">Only in a custom window you pick, like 30 minutes before. Nothing runs in the background all night.</p>
+</div>
+</div>
+<div class="feature-card glass">
+<div>
+<h3 class="">Asks before it acts</h3>
+<p class="">Screen use, steps, or movement show you're up. Dawnly asks, you tap, and the alarm is silenced peacefully.</p>
+</div>
+</div></div>
+</section>
+<!-- Gentle Reminders Feature Section -->
+<section>
+<h2 class="section-title">Gentle Reminders</h2>
+<p class="section-subtitle">Set recurring micro-habits and gentle check-ins throughout your waking hours—day or night—without alarming the whole room.</p>
+<div class="reminders-card glass">
+<div class="reminders-header"><div class="reminders-title-group"><h3 class="">Habits that flow with your day</h3><p class="soft-text" style="font-size: 0.9rem; margin-top: 4px;">Whether you are up at dawn or working irregular shifts: stay on track with drinking water every 20 minutes, stretching, or resting your eyes. Quiet bubble chimes that fit naturally into your waking hours.</p></div></div>
+<div class="reminders-interactive-card">
+<div class="reminder-sample-item">
+<div>
+<div class="reminder-sample-title">Drink water</div>
+<div class="reminder-sample-desc">Stay fresh all day • Every 20 min</div>
+</div>
+<span class="" style="font-size: 0.8rem; font-weight: 700;">8:00 am – 10:00 pm</span>
+</div>
+<div class="reminder-chips"><span class="reminder-chip">15 min</span><span class="reminder-chip active">Every 20 min</span><span class="reminder-chip">30 min</span><span class="reminder-chip">1 hr</span><span class="reminder-chip">Custom</span><span class="reminder-chip">Bubble sound</span></div>
+</div>
+</div>
+</section>
+<!-- Install & Setup (Two Columns on Desktop) -->
+<div class="split-columns">
+<!-- Install the APK -->
+<section>
+<h2 class="section-title">Install the APK</h2>
+<p class="section-subtitle">Dawnly isn't on the Play Store yet, so you install it from the file.</p>
+<div class="steps-container glass">
+<div class="step-row">
+<span class="step-number">1</span>
+<div class="step-content">
+<h4 class="">Download</h4>
+<p class="">Tap <b>Download APK</b>. If Chrome warns you, tap <b>Download anyway</b>.</p>
+</div>
+</div>
+<div class="step-row">
+<span class="step-number">2</span>
+<div class="step-content">
+<h4 class="">Open the file</h4>
+<p class="">Open it from your notifications or the Downloads folder.</p>
+</div>
+</div>
+<div class="step-row">
+<span class="step-number">3</span>
+<div class="step-content">
+<h4 class="">Allow this source</h4>
+<p class="">If asked, allow installs from Chrome (or your file app), then tap <b>Install</b>.</p>
+</div>
+</div>
+</div>
+<p class="info-note">The warning is normal for any app that isn't from the Play Store.</p>
+</section>
+<!-- Set It Up -->
+<section>
+<h2 class="section-title">Set it up</h2>
+<p class="section-subtitle">Open Dawnly and it walks you through these. Each one helps it tell you're awake.</p>
+<div class="steps-container glass">
+<div class="step-row">
+<span class="step-number">1</span>
+<div class="step-content">
+<h4 class="">Notifications</h4>
+<p class="">So Dawnly can ask <b>"Up already?"</b> when it sees you're awake.</p>
+</div>
+</div>
+<div class="step-row">
+<span class="step-number">2</span>
+<div class="step-content">
+<h4 class="">Physical activity</h4>
+<p class="">Counts your steps in the morning, so walking around counts.</p>
+</div>
+</div>
+<div class="step-row">
+<span class="step-number">3</span>
+<div class="step-content">
+<h4 class="">Usage access <span class="optional-tag">Optional</span></h4>
+<p class="">Notices when you start opening apps. If Android says <b>Restricted setting</b>, go to App info, tap the <b>three dots</b>, then <b>Allow restricted settings</b>, and try again.</p>
+</div>
+</div>
+<div class="step-row">
+<span class="step-number">4</span>
+<div class="step-content">
+<h4 class="">Background use</h4>
+<p class="">Set battery to <b>Unrestricted</b>, so your phone doesn't stop Dawnly while it watches.</p>
+</div>
+</div>
+</div>
+<p class="info-note">Android may show a warning or ask for an extra step with Usage access (like "Restricted setting"), but it's totally safe and routine for apps installed outside the Play Store. Dawnly never collects, tracks, or shares your personal data—everything stays 100% on your device.</p>
+</section>
+</div>
+<!-- Privacy & Simplified One-Click Feedback -->
+<div class="split-columns">
+<!-- Private by Design -->
+<section id="privacy">
+<h2 class="section-title">Private by design</h2>
+<p class="section-subtitle">We never collect, upload, or sell your habits. Everything stays local.</p>
+<div class="privacy-tags">
+<span class="privacy-tag glass">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle><line x1="2" x2="22" y1="2" y2="22"></line></svg>
+No account
+</span>
+<span class="privacy-tag glass">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M1 1l22 22"></path><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path></svg>
+Fully offline
+</span>
+<span class="privacy-tag glass">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+Nothing runs all night
+</span>
+<span class="privacy-tag glass">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><line x1="9" x2="15" y1="9" y2="15"></line><line x1="15" x2="9" y1="9" y2="15"></line></svg>
+No ads
+</span>
+</div>
+<p class="info-note">Tested on Nothing, Motorola, Redmi and OPPO phones.</p>
+</section>
+</div>
+<!-- Footer -->
+<footer><a class="" href="/privacy">Privacy policy</a> · <a class="" href="#feedback">Feedback</a><div class="" style="margin-top: 14px; font-size: 0.85rem; color: var(--soft); text-align: center;"><a class="" href="https://www.linkedin.com/in/aryan-lanke" oncontextmenu="window.open('https://www.linkedin.com/in/aryan-lanke', '_blank');" onmouseout="this.style.color='inherit'" onmouseover="this.style.color='var(--accent)'" rel="noopener noreferrer" style="color: inherit; text-decoration: none; font-weight: 500; transition: color 0.2s;" target="_blank">Made by Aryan Lanke</a></div></footer>
+</div>
+<!-- Interactive JS Logic -->
+<script>
+function flip() {
+  const root = document.documentElement;
+  const current = root.getAttribute('data-theme') || 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+}
+
+function triggerDownload(e) {
+  e.preventDefault();
+  const counter = document.getElementById('live-counter');
+  let currentNum = parseInt(counter.textContent.replace(/,/g, ''), 10) || 1234;
+  currentNum += 1;
+  counter.textContent = currentNum.toLocaleString();
+  
+  // Download button instant visual feedback
+  const btn = document.getElementById('download-btn');
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"></polyline></svg> Download started (+1)`;
+  
+  // Create virtual APK file download trigger
+  const a = document.createElement('a');
+  a.href = '#';
+  a.setAttribute('download', 'Dawnly-v1.5.3.apk');
+  
+  setTimeout(() => {
+    btn.innerHTML = originalHTML;
+  }, 2200);
+}
+</script>
+</body></html>
