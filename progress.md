@@ -19,8 +19,8 @@ The homepage, APK headers, and D1-backed download counter were verified in produ
 - The sky stays fixed during scrolling in both themes.
 - Clouds were removed. Day mode now uses black shooting stars with the same staggered timing as night mode.
 - Phone screenshots are stored locally at 719 x 1600.
-- Added the real Dawnly 1.5.4 APK at `public/downloads/Dawnly-v1.5.4.apk`.
-- Verified the APK size as 2,995,680 bytes, or 2.99568 MB. The site correctly displays 3.0 MB.
+- Replaced the mislabeled 0.1.0 prototype with the signed Dawnly 1.5.4 release at `public/downloads/Dawnly-v1.5.4.apk`.
+- Verified the APK: versionCode 14, package `com.aryanlanke.dawnly`, minimum Android 8.0, 3,232,180 bytes (3.2 MB), signed by Aryan Lanke.
 - Added the Cloudflare Pages Function at `functions/api/downloads.js`.
 - Added the D1 migration at `migrations/0001_create_download_stats.sql`.
 - The counter is global and starts at 0. Every successful download click increments it atomically, including repeat downloads after an uninstall.
