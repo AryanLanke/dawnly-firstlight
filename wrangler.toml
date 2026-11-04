@@ -5,5 +5,5 @@ compatibility_date = "2025-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "dawnly-downloads"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "6c19e846-b53f-4482-acef-d310d6748d83"
 migrations_dir = "migrations"
