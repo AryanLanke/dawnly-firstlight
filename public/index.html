@@ -13,8 +13,7 @@
 (function () {
   var t = null;
   try { t = localStorage.getItem('dawnly-theme'); } catch (e) {}
-  if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
-  document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
 })();
 </script>
 <style>
@@ -36,7 +35,7 @@
   --accent: #0A0A0E;
   --accent-hover: #1E1F24;
   --on-accent: #ffffff;
-  --star: #94A3B8;
+  --star: #090A0D;
   --field: rgba(255, 255, 255, 0.8);
   --phone-shadow: 0 32px 75px -15px rgba(0, 0, 0, 0.22), 0 10px 24px rgba(0, 0, 0, 0.08);
   --notif-bg: rgba(255, 255, 255, 0.95);
@@ -71,7 +70,12 @@
   color-scheme: dark;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
 html { scroll-behavior: smooth; }
 body {
   font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
@@ -81,6 +85,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   position: relative;
+  isolation: isolate;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
@@ -88,9 +93,10 @@ body {
 .sky {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   overflow: hidden;
   pointer-events: none;
+  transform: translateZ(0);
   background: linear-gradient(180deg, #E2ECF8 0%, #EDF3FA 50%, #F5F7FA 100%);
   transition: opacity 0.5s ease;
 }
@@ -110,43 +116,14 @@ body {
   0% { transform: scale(0.96); opacity: 0.85; }
   100% { transform: scale(1.04); opacity: 0.98; }
 }
-.cloud {
-  position: absolute;
-  height: 50px;
-  border-radius: 100px;
-  background: linear-gradient(180deg, #FFFFFF 0%, #F0F5FD 100%);
-  box-shadow: 0 16px 36px -8px rgba(130, 160, 200, 0.35), inset 0 2px 4px #FFFFFF;
-  filter: blur(2px);
-  opacity: 0.94;
-  will-change: transform;
-  animation: drift linear infinite;
-}
-.cloud::before, .cloud::after {
-  content: "";
-  position: absolute;
-  background: inherit;
-  border-radius: 50%;
-  box-shadow: inset 0 2px 4px #FFFFFF;
-}
-.cloud::before { width: 55%; height: 170%; left: 16%; top: -65%; }
-.cloud::after { width: 42%; height: 140%; left: 52%; top: -45%; }
-.c1 { width: 260px; top: 14%; left: -300px; animation-duration: 70s; opacity: 0.96; }
-.c2 { width: 200px; top: 48%; left: -240px; animation-duration: 95s; animation-delay: -35s; opacity: 0.9; }
-.c3 { width: 310px; top: 76%; left: -360px; animation-duration: 80s; animation-delay: -18s; opacity: 0.94; }
-@keyframes drift {
-  from { transform: translateX(0) translateY(0); }
-  50% { transform: translateX(calc(50vw + 200px)) translateY(-8px); }
-  to { transform: translateX(calc(100vw + 450px)) translateY(0); }
-}
-
-.moon, .star, .twinkle { display: none; }
+.moon, .twinkle { display: none; }
 [data-theme="dark"] .sky {
   background: radial-gradient(75% 50% at 85% 10%, rgba(35, 40, 52, 0.4), transparent 72%),
               radial-gradient(60% 40% at 15% 85%, rgba(24, 26, 36, 0.35), transparent 75%),
               #070709;
 }
-[data-theme="dark"] .sun, [data-theme="dark"] .cloud { display: none; }
-[data-theme="dark"] .moon, [data-theme="dark"] .star, [data-theme="dark"] .twinkle { display: block; }
+[data-theme="dark"] .sun { display: none; }
+[data-theme="dark"] .moon, [data-theme="dark"] .twinkle { display: block; }
 .moon {
   position: absolute;
   right: -40px;
@@ -178,7 +155,7 @@ body {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #ffffff;
+  background: var(--star);
   box-shadow: 0 0 10px 2px var(--star);
 }
 @keyframes shoot {
@@ -199,7 +176,7 @@ body {
 }
 @keyframes tw { to { opacity: 0.15; transform: scale(0.6); } }
 @media (prefers-reduced-motion: reduce) {
-  .cloud, .star, .twinkle, .sun { animation: none !important; }
+  .star, .twinkle, .sun { animation: none !important; }
 }
 
 /* ============ Liquid glass ============ */
@@ -224,6 +201,8 @@ body {
 
 /* ============ Layout ============ */
 .wrap {
+  position: relative;
+  z-index: 1;
   max-width: 430px;
   margin: 0 auto;
   padding: 16px 20px 48px;
@@ -288,6 +267,11 @@ header.top-nav {
 }
 .theme-toggle-btn:hover { transform: scale(1.05); }
 .theme-toggle-btn:active { transform: scale(0.95); }
+.theme-toggle-btn:focus { outline: none; }
+.theme-toggle-btn:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
 .theme-toggle-btn svg { width: 19px; height: 19px; }
 .icon-sun { display: none; }
 [data-theme="dark"] .icon-sun { display: block; }
@@ -754,9 +738,6 @@ footer .made-by:hover { color: var(--text); }
   /* Bigger sky */
   .sun { right: -40px; top: -40px; width: 450px; height: 450px; }
   .moon { right: -40px; top: -40px; width: 450px; height: 450px; }
-  .c1 { width: 440px; height: 90px; top: 8%; }
-  .c2 { width: 340px; height: 75px; top: 24%; }
-  .c3 { width: 520px; height: 105px; top: 55%; }
 
   /* Header */
   header.top-nav {
@@ -985,9 +966,6 @@ footer .made-by:hover { color: var(--text); }
 <!-- Dynamic sky background -->
 <div aria-hidden="true" class="sky">
 <div class="sun"></div>
-<div class="cloud c1"></div>
-<div class="cloud c2"></div>
-<div class="cloud c3"></div>
 <div class="moon"></div>
 <i class="star" style="--x:68%;--y:12%;--d:8.5s"></i>
 <i class="star" style="--x:38%;--y:28%;--d:10s;--w:3.2s"></i>
@@ -1051,16 +1029,16 @@ footer .made-by:hover { color: var(--text); }
 </div>
 <!-- Phone download CTA -->
 <div class="download-area">
-<a class="btn-cta" href="#download" id="download-btn" onclick="triggerDownload(event)">
+<a class="btn-cta" href="downloads/Dawnly-v1.5.4.apk" download="Dawnly-v1.5.4.apk" id="download-btn" onclick="triggerDownload(event)">
 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" viewBox="0 0 24 24">
 <path d="M12 3v13m0 0l-5-5m5 5l5-5M5 21h14"></path>
 </svg>
 Download APK
 </a>
-<p class="file-meta">Version 1.5.4 · Android 11+ · 3.2 MB · APK file</p>
+<p class="file-meta">Version 1.5.4 · Android 11+ · 3.0 MB · APK file</p>
 <div>
 <span class="download-count-pill glass-pill">
-<span><b id="live-counter">1,234</b> downloads</span>
+<span><b id="live-counter">0</b> downloads</span>
 </span>
 </div>
 </div>
@@ -1115,8 +1093,8 @@ Version 1.5.4 · Android 11+
 <div class="showcase-wrapper">
 <div aria-label="Dawnly app live preview" class="phone-frame">
 <div class="phone-inner">
-<img alt="Dawnly app light mode screen showing Watching quietly and status checklist" class="phone-screen-img light-shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRlQ2haJ8sObHBaXeSuJXdReRIbMgqurhzDk0c9sStVtIAmbXt75OJpAkBe5FrOe_3WB3ofkZji26tC584bHJMqVrYlq8Z6sU85cTPpbDXDRLU-W0eHnPlp-Lm5IkPsEOy6Ra0rPFuvFEiqY6W-5LZum85Pkm9bNTYxiLZh7I7jm4mmD0rz3-sKjrgixgPwbjcCl39jAIfEwAX46HQNb7iSDzixX_rD-7X4M76WWFdO2rGdclRWefM"/>
-<img alt="Dawnly app dark obsidian mode screen showing Watching quietly and checklist" class="phone-screen-img dark-shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwbUGb6epeJsVRsLnr4YQy7xtAxMmIMPrrC5vEyVNvCeDmoq-Gsb75nUV7O-uO4M4Hl3agw2gR0fyJFzgMYGBTgkDtsVa3UCowU1zoM6qTIygJxGiSf5zakZFykNJdMjveMokN7lP_g4f_FaqgTkiYnHB0eoAxAWHrVgox9e4lEp_6HzQyiWIQllB19PTLnWgohlIlCheWubZe3WuvurqjlzOjQgT-LoEW7XsBjH1U6fW_umQExiJH"/>
+<img alt="Dawnly app light mode screen showing Watching quietly and status checklist" class="phone-screen-img light-shot" src="images/dawnly-light.jpg"/>
+<img alt="Dawnly app dark obsidian mode screen showing Watching quietly and checklist" class="phone-screen-img dark-shot" src="images/dawnly-dark.jpg"/>
 </div>
 </div>
 </div>
@@ -1278,7 +1256,7 @@ No ads
 <footer>
 <a href="/privacy">Privacy policy</a> · <a href="#feedback">Feedback</a>
 <div style="margin-top: 14px;">
-<a class="made-by" href="https://www.linkedin.com/in/aryan-lanke" oncontextmenu="window.open('https://www.linkedin.com/in/aryan-lanke', '_blank');" rel="noopener noreferrer" target="_blank">Made by Aryan Lanke</a>
+<a class="made-by" href="https://www.linkedin.com/in/aryan-lanke-9644232b6/" oncontextmenu="window.open('https://www.linkedin.com/in/aryan-lanke-9644232b6/', '_blank');" rel="noopener noreferrer" target="_blank">Made by Aryan Lanke</a>
 </div>
 </footer>
 </div>
@@ -1291,30 +1269,55 @@ function flip() {
   try { localStorage.setItem('dawnly-theme', next); } catch (e) {}
 }
 
-function triggerDownload(e) {
+let downloadInProgress = false;
+
+function setDownloadCount(count) {
+  document.getElementById('live-counter').textContent = Number(count).toLocaleString();
+}
+
+async function loadDownloadCount() {
+  try {
+    const response = await fetch('api/downloads', {
+      headers: { Accept: 'application/json' }
+    });
+    if (!response.ok) return;
+    const data = await response.json();
+    setDownloadCount(data.count);
+  } catch (e) {}
+}
+
+async function triggerDownload(e) {
   e.preventDefault();
-  const counter = document.getElementById('live-counter');
-  let currentNum = parseInt(counter.textContent.replace(/,/g, ''), 10) || 1234;
-  currentNum += 1;
-  counter.textContent = currentNum.toLocaleString();
-  try { localStorage.setItem('dawnly-downloads', String(currentNum)); } catch (err) {}
+  if (downloadInProgress) return;
+  downloadInProgress = true;
 
   const btn = document.getElementById('download-btn');
   const originalHTML = btn.innerHTML;
-  btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"></polyline></svg> Download started (+1)';
+  const apk = document.createElement('a');
+  apk.href = btn.href;
+  apk.download = 'Dawnly-v1.5.4.apk';
+  document.body.appendChild(apk);
+  apk.click();
+  apk.remove();
 
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"></polyline></svg> Download started';
   setTimeout(() => {
     btn.innerHTML = originalHTML;
+    downloadInProgress = false;
   }, 2200);
+
+  try {
+    const response = await fetch('api/downloads', {
+      method: 'POST',
+      headers: { Accept: 'application/json' }
+    });
+    if (!response.ok) return;
+    const data = await response.json();
+    setDownloadCount(data.count);
+  } catch (e) {}
 }
 
-(function () {
-  try {
-    const saved = parseInt(localStorage.getItem('dawnly-downloads'), 10);
-    const counter = document.getElementById('live-counter');
-    if (saved > 1234) counter.textContent = saved.toLocaleString();
-  } catch (e) {}
-})();
+loadDownloadCount();
 </script>
 </body>
 </html>

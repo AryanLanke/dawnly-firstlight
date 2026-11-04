@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS download_stats (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  count INTEGER NOT NULL DEFAULT 0
+);
+
+INSERT INTO download_stats (id, count)
+VALUES (1, 0)
+ON CONFLICT(id) DO NOTHING;
