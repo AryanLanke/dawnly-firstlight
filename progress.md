@@ -4,9 +4,13 @@ Last updated: 4 November 2026
 
 ## Status
 
-The website is feature-complete. Production deployment is the remaining work.
+The website is live at https://dawnly-website.pages.dev.
 
-Aryan will handle the Cloudflare login, project and database setup, and final link publication. The site must not be deployed or connected without Aryan present.
+Cloudflare Pages project: `dawnly-website`
+Production D1 database: `dawnly-downloads`
+Deployment method: Wrangler direct upload from the project root
+
+The homepage, APK headers, and D1-backed download counter were verified in production. A test increment succeeded and the public counter was reset to 0.
 
 ## Completed today
 
@@ -24,47 +28,28 @@ Aryan will handle the Cloudflare login, project and database setup, and final li
 - Kept the local preview server available at `http://localhost:4173`.
 - Stopped feature development for this release.
 
-## Tomorrow: 5 November 2026
+## Deployment completed
 
-Goal: publish Dawnly on Cloudflare Pages with the D1 download counter working in production.
+- Created the production D1 database and applied `0001_create_download_stats.sql`.
+- Created the Cloudflare Pages project and attached the `DB` binding.
+- Deployed the site, Pages Functions, APK, images, and `_headers`.
+- Verified the homepage returns HTTP 200.
+- Verified the APK returns HTTP 200 with `application/vnd.android.package-archive` and `attachment` headers.
+- Verified the counter endpoint returns `0`, increments on POST, and was reset to `0`.
+- Captured the production desktop page and confirmed the dark-mode design renders correctly.
 
-### Aryan's steps
+### Future deployments
 
-1. Log in to Cloudflare in the browser.
-2. Create a D1 database named `dawnly-downloads`.
-3. Copy its real database ID into `wrangler.toml`, replacing `REPLACE_WITH_YOUR_D1_DATABASE_ID`.
-4. Apply the migration to the production database:
-   `npx wrangler d1 migrations apply dawnly-downloads --remote`
-5. Create the Cloudflare Pages project named `dawnly-website`.
-6. Deploy from the project root with Wrangler so the `public/` site and `functions/` API are uploaded together.
-7. Add the Pages project's D1 binding with variable name `DB` if it is not picked up from `wrangler.toml` automatically.
-8. Attach the final domain or use the generated `*.pages.dev` address, then publish the link.
+```text
+npx wrangler@latest pages deploy public --project-name dawnly-website --branch main
+```
 
-### Production checks
+## Remaining optional configuration
 
-- Open the published site over HTTPS on a phone and desktop.
-- Confirm the page loads with dark mode by default and the theme choice survives a reload.
-- Confirm all three shooting stars work in both themes and the sky does not move during scrolling.
-- Request `GET /api/downloads`; the initial count should be 0.
-- Download the APK and confirm the file is exactly 2,995,680 bytes and has an `.apk` filename.
-- Download from two separate browsers or devices and confirm the shared count becomes 2.
-- Download again from either browser and confirm the shared count becomes 3.
-- Confirm the APK still downloads if the counter API is temporarily unavailable.
-
-### Definition of done
-
-- The public HTTPS link loads the complete site.
-- The APK installs after the normal Android unknown-source confirmation.
-- The download counter is visible on phones and updates globally across devices.
-- No production console errors or missing asset requests remain.
-- The final link is recorded in this file.
-
-## Pending configuration
-
-- `wrangler.toml` still contains the placeholder D1 database ID.
-- The Cloudflare Pages project, production database, D1 binding, and custom domain do not exist yet.
-- No production deployment has been performed.
-- Nothing has been pushed to a remote Git repository.
+- Cloudflare Web Analytics has not been enabled. It can be enabled from the Pages project's Metrics section.
+- The Pages project is deployed by Wrangler direct upload. It is not yet connected to GitHub for automatic deployments.
+- No custom domain has been attached; the site currently uses `dawnly-website.pages.dev`.
+- The site is pushed to https://github.com/AryanLanke/dawnly-firstlight.
 
 ## Known limitations
 
