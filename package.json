@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "wrangler pages dev public",
     "sync-apk": "node scripts/sync-apk.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
     "db:migrate:local": "wrangler d1 migrations apply dawnly-downloads --local",
     "db:migrate:remote": "wrangler d1 migrations apply dawnly-downloads --remote",
     "deploy": "node scripts/sync-apk.mjs && wrangler pages deploy public --project-name dawnly-website --branch main"
