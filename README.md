@@ -7,8 +7,7 @@ Dawnly is an Android app that notices you're already up and turns your alarm off
 **[Visit the site →](https://dawnly-website.pages.dev)** · [Privacy policy](https://dawnly-website.pages.dev/privacy)
 
 <p align="center">
-  <img src="public/images/dawnly-dark.jpg" width="240" alt="The Dawnly app in dark mode, showing Watching quietly and a checklist of signs it looks for">
-  <img src="public/images/dawnly-light.jpg" width="240" alt="The Dawnly app in light mode, showing the same screen">
+  <img src="docs/images/website-desktop.png" width="720" alt="The Dawnly website on desktop, showing the headline, the download notice and a phone preview of the app">
 </p>
 
 ## Why this exists
