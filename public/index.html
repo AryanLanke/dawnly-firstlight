@@ -26,6 +26,7 @@
 <link href="css/header.css" rel="stylesheet"/>
 <link href="css/hero.css" rel="stylesheet"/>
 <link href="css/download.css" rel="stylesheet"/>
+<link href="css/toast.css" rel="stylesheet"/>
 <link href="css/notification.css" rel="stylesheet"/>
 <link href="css/showcase.css" rel="stylesheet"/>
 <link href="css/sections.css" rel="stylesheet"/>
@@ -300,6 +301,17 @@ No ads
 <a class="made-by" href="https://www.linkedin.com/in/aryan-lanke-9644232b6/" oncontextmenu="window.open('https://www.linkedin.com/in/aryan-lanke-9644232b6/', '_blank');" rel="noopener noreferrer" target="_blank">Made by Aryan Lanke</a>
 </div>
 </footer>
+</div>
+
+<div aria-live="polite" class="download-toast glass-pill" hidden id="download-toast" role="status">
+<span aria-hidden="true" class="toast-icon">
+<svg viewBox="0 0 24 24">
+<path class="toast-arrow" d="M12 4v10M8 10l4 4 4-4"></path>
+<path class="toast-tray" d="M5 19.5h14"></path>
+<polyline class="toast-check" points="6 12.5 10 16.5 18 8"></polyline>
+</svg>
+</span>
+<span class="toast-text"><strong id="download-toast-title">Starting download…</strong><span>Dawnly <span data-app-version></span> · check your notifications</span></span>
 </div>
 
 <dialog class="download-dialog" id="download-dialog" aria-labelledby="download-dialog-title">

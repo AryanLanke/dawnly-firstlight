@@ -1,4 +1,5 @@
 import { recordDownload } from './download-api.js';
+import { showDownloadToast } from './toast.js';
 
 let downloadInProgress = false;
 
@@ -11,7 +12,10 @@ function startDownload() {
   btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"></polyline></svg> Download started';
 
   recordDownload();
+  showDownloadToast();
 
+  // Start the APK request just after the toast's tick appears. On Android, Chrome then shows
+  // its own "Download anyway?" prompt over the page, so the toast plays first.
   setTimeout(() => {
     const apk = document.createElement('a');
     apk.href = btn.href;
@@ -19,12 +23,12 @@ function startDownload() {
     document.body.appendChild(apk);
     apk.click();
     apk.remove();
-  }, 620);
+  }, 2100);
 
   setTimeout(() => {
     btn.innerHTML = originalHTML;
     downloadInProgress = false;
-  }, 2400);
+  }, 3600);
 }
 
 function closeDownloadDialog() {

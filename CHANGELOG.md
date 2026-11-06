@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows [Kee
 ## [Unreleased]
 
 ### Added
+- "Download started" toast after "Yes, download it": an arrow drops and turns into a tick. The APK request now starts just after the tick, so Chrome's own download prompt no longer hides it.
+- Smooth dark-mode GIFs of the site on desktop and phone in the README.
 - README, MIT license, changelog, security policy, and architecture and operations guides.
 - Privacy policy page at `/privacy`.
 - `.editorconfig` and `.gitattributes`.
