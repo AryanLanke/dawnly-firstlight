@@ -4,7 +4,7 @@ import { statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findAapt, readBadging, versionFromName } from './lib/aapt.mjs';
-import { installApk, listApks, pickSource } from './lib/apk-files.mjs';
+import { installApk, listApks, pickSource, removeOtherApks } from './lib/apk-files.mjs';
 import { updateIndex } from './lib/update-index.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -28,8 +28,10 @@ const fileName = `Dawnly-v${version}.apk`;
 const sizeBytes = statSync(sourcePath).size;
 const sizeLabel = `${(sizeBytes / 1e6).toFixed(1)} MB`;
 
-const removed = installApk(downloadsDir, sourcePath, fileName, apks);
+// Order matters: copy the new APK, point the page at it, and only then delete the old files.
+installApk(downloadsDir, sourcePath, fileName);
 updateIndex(indexPath, { version, fileName, sizeLabel });
+const removed = removeOtherApks(downloadsDir, apks, fileName);
 
 console.log(`APK:      ${fileName}`);
 console.log(`Version:  ${version} (versionCode ${versionCode})`);

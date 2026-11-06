@@ -57,7 +57,7 @@ Each page view makes one Function call and one D1 read. Each confirmed download 
 ## Troubleshooting
 
 - **Counter shows 0 or doesn't change.** Open `/api/downloads` in the browser. A 503 means the `DB` binding is missing from the Pages project (Settings, Functions, D1 bindings: name `DB`, database `dawnly-downloads`). A 500 usually means the migration was not applied: run `npm run db:migrate:remote`.
-- **POST returns 403.** The request came from a different origin. This is expected for other sites, and a custom domain needs no change because the check compares against the request's own host.
+- **POST returns 403.** The request came from a different origin, or had no `Origin` header (curl and other non-browser tools). This is expected, and a custom domain needs no change because the check compares against the request's own host.
 - **APK downloads as a `.zip` or opens as text.** `public/_headers` wasn't deployed. Redeploy and check that the response has `Content-Type: application/vnd.android.package-archive`.
 - **Old version still shows after deploy.** Hard-refresh. The APK is cached for an hour (`Cache-Control: public, max-age=3600`).
 - **`sync-apk` fails with "missing ...".** Someone edited the meta tags or the download link in `index.html` out of shape. See the note at the end of [architecture.md](architecture.md).

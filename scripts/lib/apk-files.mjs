@@ -28,11 +28,15 @@ export function pickSource(downloadsDir, apks, explicitPath) {
   return join(downloadsDir, newest);
 }
 
-// Copies the APK to its canonical name and deletes every other APK in the folder.
-export function installApk(downloadsDir, sourcePath, fileName, apks) {
+// Copies the APK to its canonical name. Old APKs are left in place until
+// removeOtherApks runs, so a failure before that point never loses a release.
+export function installApk(downloadsDir, sourcePath, fileName) {
   const targetPath = join(downloadsDir, fileName);
   if (sourcePath !== targetPath) copyFileSync(sourcePath, targetPath);
+}
 
+// Deletes every APK in the folder except the canonical one. Returns the removed names.
+export function removeOtherApks(downloadsDir, apks, fileName) {
   const removed = [];
   for (const name of apks) {
     if (name === fileName) continue;

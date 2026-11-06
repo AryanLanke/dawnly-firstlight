@@ -13,6 +13,14 @@ All notable changes to this project are documented here. The format follows [Kee
 - Same-origin check on `POST /api/downloads`: requests from other websites are rejected with 403.
 - Pinned `wrangler` dev dependency, plus `dev` and `db:migrate:*` npm scripts.
 
+### Fixed
+- `POST /api/downloads` now also rejects requests with no `Origin` header, so plain scripts can't bump the counter.
+- `sync-apk` copies the new APK and updates `index.html` before deleting old APKs, so a failed run no longer removes the live build.
+- `sync-apk` reads the version from the APK file name only, not from folders in its path.
+- The count is shown only when the API returns a valid whole number.
+- Security headers on all pages: `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`.
+- Both D1 error paths log the exception to Cloudflare logs.
+
 ### Changed
 - Split the 1,500-line `index.html` into per-section CSS files (`public/css/`) and ES modules (`public/js/`).
 - Moved the logo into `public/images/logo.svg` instead of repeating it inline.

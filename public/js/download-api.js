@@ -2,6 +2,11 @@ import { setDownloadCount } from './odometer.js';
 
 const ENDPOINT = 'api/downloads';
 
+// Only a non-negative whole number is shown; anything else leaves the page as it is.
+function isValidCount(value) {
+  return Number.isSafeInteger(value) && value >= 0;
+}
+
 export async function loadDownloadCount() {
   try {
     const response = await fetch(ENDPOINT, {
@@ -9,7 +14,7 @@ export async function loadDownloadCount() {
     });
     if (!response.ok) return;
     const data = await response.json();
-    setDownloadCount(data.count, false);
+    if (isValidCount(data.count)) setDownloadCount(data.count, false);
   } catch (e) {}
 }
 
@@ -21,6 +26,6 @@ export async function recordDownload() {
     });
     if (!response.ok) return;
     const data = await response.json();
-    setDownloadCount(data.count, true);
+    if (isValidCount(data.count)) setDownloadCount(data.count, true);
   } catch (e) {}
 }

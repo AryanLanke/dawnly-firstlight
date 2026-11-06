@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 
 function compareVersions(a, b) {
   const pa = a.split(/[.-]/).map(Number);
@@ -58,7 +58,8 @@ export function readBadging(apkPath, aapt) {
   }
 }
 
-export function versionFromName(fileName) {
-  const match = fileName.match(/(\d+\.\d+\.\d+)/);
+export function versionFromName(filePath) {
+  // Only the file name counts: a version-like folder in the path must not match.
+  const match = basename(filePath).match(/(\d+\.\d+\.\d+)/);
   return match ? match[1] : null;
 }

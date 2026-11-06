@@ -7,14 +7,15 @@ export function json(body, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: JSON_HEADERS });
 }
 
-// True when the request carries an Origin header that is not this site.
-// Requests with no Origin header (same-origin GETs, curl) are not rejected here.
-export function isForeignOrigin(request) {
+// True only when the request's Origin header is this site's origin.
+// Browsers send Origin on every POST, so a missing header means a non-browser
+// client (curl, scripts) and is treated as untrusted for writes.
+export function isSameOriginWrite(request) {
   const origin = request.headers.get("Origin");
   if (!origin) return false;
   try {
-    return new URL(origin).origin !== new URL(request.url).origin;
+    return new URL(origin).origin === new URL(request.url).origin;
   } catch {
-    return true;
+    return false;
   }
 }

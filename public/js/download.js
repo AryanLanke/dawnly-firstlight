@@ -57,11 +57,15 @@ export function initDownload() {
 
   if (button) button.addEventListener('click', triggerDownload);
 
-  document.getElementById('download-cancel').addEventListener('click', closeDownloadDialog);
-  document.getElementById('download-confirm').addEventListener('click', function () {
-    closeDownloadDialog();
-    startDownload();
-  });
+  const cancel = document.getElementById('download-cancel');
+  const confirm = document.getElementById('download-confirm');
+  if (cancel) cancel.addEventListener('click', closeDownloadDialog);
+  if (confirm) {
+    confirm.addEventListener('click', function () {
+      closeDownloadDialog();
+      startDownload();
+    });
+  }
 
   if (dialog) {
     dialog.addEventListener('click', function (e) {
