@@ -24,7 +24,7 @@ The homepage, APK headers, and D1-backed download counter were verified in produ
 - Added the Cloudflare Pages Function at `functions/api/downloads.js`.
 - Added the D1 migration at `migrations/0001_create_download_stats.sql`.
 - The counter is global and starts at 0. Every confirmed download start increments it atomically, including repeat downloads after an uninstall.
-- Added a site-controlled "Download anyway" confirmation before the APK request; the copy is intentionally playful, the count rolls upward one digit step at a time, then the native download starts.
+- Added a site-controlled "Yes, download it" / "No, I was too afraid" confirmation before the APK request; the copy is intentionally playful, the count rolls upward one digit step at a time, then the native download starts.
 - Removed the four obsolete HTML variants, unused cloud artwork, and temporary test caches.
 - Kept the local preview server available at `http://localhost:4173`.
 - Stopped feature development for this release.
@@ -56,7 +56,7 @@ npx wrangler@latest pages deploy public --project-name dawnly-website --branch m
 
 - The counter records confirmed download starts, not confirmed installations. Counting actual installs would require app telemetry, which conflicts with Dawnly's offline/private design.
 - Chrome for Android begins the APK request before it displays its native download prompt. The phone test confirmed that Cancel and Download produce no follow-up network request or page event, so the site cannot observe the native prompt's result.
-- To keep the count tied to an explicit user choice, the site asks for its own "Download anyway" confirmation, records the count, then starts the APK request after a short delay so the rolling number is visible.
+- To keep the count tied to an explicit user choice, the site asks for its own "Yes, download it" confirmation, records the count, then starts the APK request after a short delay so the rolling number is visible.
 - Every confirmed download start counts again, including a repeat download after deleting and reinstalling the app.
 - The local Python preview cannot run the Cloudflare Function, so the local counter remains at 0 and logs a 404 for `/api/downloads`. This is expected.
 - On a phone, `localhost` refers to the phone itself. Use the PC's current LAN address instead; the previously verified address was `http://192.168.1.8:4173`, but it can change.
