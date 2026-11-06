@@ -1,6 +1,6 @@
 # Dawnly progress
 
-Last updated: 5 November 2026
+Last updated: 6 November 2026
 
 ## Status
 
@@ -19,8 +19,9 @@ The homepage, APK headers, and D1-backed download counter were verified in produ
 - The sky stays fixed during scrolling in both themes.
 - Clouds were removed. Day mode now uses golden-yellow shooting stars that echo the sun, with the same staggered timing as night mode.
 - Phone screenshots are stored locally at 719 x 1600.
-- Replaced the mislabeled 0.1.0 prototype with the signed Dawnly 1.5.4 release at `public/downloads/Dawnly-v1.5.4.apk`.
-- Verified the APK: versionCode 14, package `com.aryanlanke.dawnly`, minimum Android 8.0, 3,232,180 bytes (3.2 MB), signed by Aryan Lanke.
+- Ships the signed Dawnly 1.6.5 release at `public/downloads/Dawnly-v1.6.5.apk`. Older APKs were removed.
+- Verified the APK: versionCode 16, versionName 1.6.5, package `com.aryanlanke.dawnly`, minimum Android 8.0, 3,253,428 bytes (3.3 MB), signed by Aryan Lanke with the same certificate as 1.5.4.
+- The version shown on the site is no longer typed by hand. `scripts/sync-apk.mjs` reads the version from the APK and updates `public/index.html`.
 - Added the Cloudflare Pages Function at `functions/api/downloads.js`.
 - Added the D1 migration at `migrations/0001_create_download_stats.sql`.
 - The counter is global and starts at 0. Every confirmed download start increments it atomically, including repeat downloads after an uninstall.
@@ -42,8 +43,25 @@ The homepage, APK headers, and D1-backed download counter were verified in produ
 ### Future deployments
 
 ```text
-npx wrangler@latest pages deploy public --project-name dawnly-website --branch main
+npm run deploy
 ```
+
+`npm run deploy` runs `scripts/sync-apk.mjs` first, then deploys with Wrangler.
+
+## Releasing a new app version
+
+1. Build the signed release APK.
+2. Drop that APK into `public/downloads/`. The file name does not matter.
+3. Run `npm run deploy` from the project root.
+
+`scripts/sync-apk.mjs` then:
+
+- reads `versionName`, `versionCode`, and the package name from the APK manifest with `aapt`;
+- copies the file to `public/downloads/Dawnly-v<version>.apk` and deletes any other APK in that folder;
+- writes the version, file name, and file size into the `app-version`, `app-apk`, and `app-size` meta tags in `public/index.html`;
+- updates the static download link.
+
+The page reads those meta tags on load and fills the nav badge, hero metadata line, desktop version chip, and download dialog title, so no version number is hardcoded in the page body. If `aapt` is missing, the script falls back to reading the version from the APK file name (for example `Dawnly-v1.6.5.apk`).
 
 ## Remaining optional configuration
 

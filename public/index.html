@@ -4,6 +4,9 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta name="description" content="Dawnly notices you're already up and turns your alarm off automatically. Free, no account, works offline. Download the APK for Android 8.0+."/>
+<meta content="1.6.5" name="app-version"/>
+<meta content="Dawnly-v1.6.5.apk" name="app-apk"/>
+<meta content="3.3 MB" name="app-size"/>
 <title>Dawnly – Up before your alarm?</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23EEF4FF'/%3E%3Ccircle cx='32' cy='32' r='13' fill='%23FFC21F'/%3E%3C/svg%3E"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -1114,7 +1117,7 @@ footer .made-by:hover { color: var(--text); }
 </svg>
 </div>
 <span class="brand-name">Dawnly</span>
-<span class="glass-pill nav-meta-badge">Version 1.5.4 · Android 8.0+</span>
+<span class="glass-pill nav-meta-badge">Version <span data-app-version></span> · Android 8.0+</span>
 </a>
 <button aria-label="Toggle light and dark mode" class="theme-toggle-btn" onclick="flip()">
 <!-- Moon icon (shown in light mode) -->
@@ -1142,13 +1145,13 @@ footer .made-by:hover { color: var(--text); }
 </div>
 <!-- Phone download CTA -->
 <div class="download-area">
-<a class="btn-cta" href="downloads/Dawnly-v1.5.4.apk" download="Dawnly-v1.5.4.apk" id="download-btn" onclick="triggerDownload(event)">
+<a class="btn-cta" href="downloads/Dawnly-v1.6.5.apk" download="Dawnly-v1.6.5.apk" id="download-btn" onclick="triggerDownload(event)">
 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" viewBox="0 0 24 24">
 <path d="M12 3v13m0 0l-5-5m5 5l5-5M5 21h14"></path>
 </svg>
 Download APK
 </a>
-<p class="file-meta">Version 1.5.4 · Android 8.0+ · 3.2 MB · APK file</p>
+<p class="file-meta">Version <span data-app-version></span> · Android 8.0+ · <span data-app-size></span> · APK file</p>
 <div>
 <span class="download-count-pill glass-pill" id="download-count" aria-live="polite" aria-label="0 downloads">
 <span class="counter-line">
@@ -1202,7 +1205,7 @@ You are on desktop. Please open from phone.
 </div>
 </div>
 <div class="version-chip glass-pill">
-Version 1.5.4 · Android 8.0+
+Version <span data-app-version></span> · Android 8.0+
 </div>
 </div>
 <!-- Phone showcase -->
@@ -1379,7 +1382,7 @@ No ads
 
 <dialog class="download-dialog" id="download-dialog" aria-labelledby="download-dialog-title">
 <div class="download-dialog-card">
-<h2 id="download-dialog-title">Download Dawnly 1.5.4?</h2>
+<h2 id="download-dialog-title">Download Dawnly <span data-app-version></span>?</h2>
 <p>Android will warn you because this is an APK. Rumor has it we can be trusted — and you can trust that rumor. Go ahead.</p>
 <div class="download-dialog-actions">
 <button class="dialog-btn" type="button" id="download-cancel">No, I was too afraid</button>
@@ -1406,6 +1409,25 @@ function flip() {
 
   applyTheme(next);
 }
+
+(function applyAppMeta() {
+  const version = document.querySelector('meta[name="app-version"]');
+  const apk = document.querySelector('meta[name="app-apk"]');
+  const size = document.querySelector('meta[name="app-size"]');
+  if (!version || !apk) return;
+
+  document.querySelectorAll('[data-app-version]').forEach(function (el) {
+    el.textContent = version.content;
+  });
+  document.querySelectorAll('[data-app-size]').forEach(function (el) {
+    el.textContent = size ? size.content : '';
+  });
+
+  const link = document.getElementById('download-btn');
+  if (!link) return;
+  link.href = 'downloads/' + apk.content;
+  link.download = apk.content;
+})();
 
 let downloadInProgress = false;
 let currentDownloadCount = null;
@@ -1482,7 +1504,7 @@ function startDownload() {
   setTimeout(() => {
     const apk = document.createElement('a');
     apk.href = btn.href;
-    apk.download = 'Dawnly-v1.5.4.apk';
+    apk.download = btn.download;
     document.body.appendChild(apk);
     apk.click();
     apk.remove();
