@@ -1,6 +1,8 @@
 # Operations runbook
 
-Cloudflare Pages project: `dawnly-website` · D1 database: `dawnly-downloads` · Live: https://dawnly-website.pages.dev
+Cloudflare Pages project: `dawnlyapp` · D1 database: `dawnly-downloads` · Live: https://dawnlyapp.pages.dev
+
+The old address, https://dawnly-website.pages.dev, belongs to a separate Pages project that only redirects to the new one. Its files are in `redirect/`. You never need to redeploy it unless the main address changes again.
 
 All commands run from the project root. The first time on a machine, run `npm install` and log in once with `npx wrangler login`.
 

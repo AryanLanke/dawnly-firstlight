@@ -4,7 +4,7 @@
 
 Dawnly is an Android app that notices you're already up and turns your alarm off before it rings. This repo is the website that hosts it.
 
-**[Visit the site →](https://dawnly-website.pages.dev)** · [Privacy policy](https://dawnly-website.pages.dev/privacy)
+**[Visit the site →](https://dawnlyapp.pages.dev)** · [Privacy policy](https://dawnlyapp.pages.dev/privacy)
 
 <p align="center">
   <img src="docs/images/website-desktop.gif" height="360" alt="The Dawnly website on desktop in dark mode, with shooting stars moving across the sky">
