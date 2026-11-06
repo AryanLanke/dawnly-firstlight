@@ -23,8 +23,7 @@ The site is a static page plus one small serverless function and one database ta
 1. **Page load.** `public/js/main.js` calls `GET /api/downloads`. The function reads `count` from D1 and returns `{"count": N}`. `odometer.js` shows it.
 2. **Visitor taps Download APK.** `download.js` opens a confirmation dialog ("Yes, download it" / "No, I was too afraid").
 3. **Visitor confirms.** The browser sends `POST /api/downloads`. The function checks the request's `Origin` (requests from other websites, and requests with no `Origin` at all, get 403), then runs one atomic SQL statement, `count = count + 1`, and returns the new total. The number on the page rolls up.
-4. **At the same time** a "Starting download…" toast drops in at the top (`toast.js`). Its arrow turns into a tick and the text changes to "Download started".
-5. **About 2.1 s later**, just after the tick, the browser fetches `/downloads/Dawnly-vX.Y.Z.apk`. That is a plain static file. `_headers` gives it the Android package content type and `Content-Disposition: attachment`. The toast plays first because Chrome on Android shows its own "Downloading file" bar and "Download anyway?" prompt the moment this request starts.
+4. **Straight after**, in the same click, the browser fetches `/downloads/Dawnly-vX.Y.Z.apk`. That is a plain static file. `_headers` gives it the Android package content type and `Content-Disposition: attachment`. Chrome on Android then shows its own "Downloading file" bar and "Download anyway?" prompt.
 
 ## What the number means
 
@@ -52,7 +51,6 @@ D1 holds one row with one integer. No IP address, user agent, cookie, or timesta
 | `public/js/odometer.js` | Renders the rolling digits |
 | `public/js/download-api.js` | The two `fetch` calls to `/api/downloads` |
 | `public/js/download.js` | Confirmation dialog and starting the APK download |
-| `public/js/toast.js` | The "Download started" toast (styles in `css/toast.css`) |
 | `functions/api/downloads.js` | `GET` and `POST` handlers |
 | `server/http.js` | JSON responses and the Origin check |
 | `server/download-stats.js` | The SQL for reading and incrementing the count |

@@ -1,34 +1,16 @@
 import { recordDownload } from './download-api.js';
-import { showDownloadToast } from './toast.js';
 
-let downloadInProgress = false;
-
+// Runs inside the "Yes, download it" click, so the browser treats the APK request as user-initiated.
 function startDownload() {
-  if (downloadInProgress) return;
-  downloadInProgress = true;
+  recordDownload();
 
   const btn = document.getElementById('download-btn');
-  const originalHTML = btn.innerHTML;
-  btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"></polyline></svg> Download started';
-
-  recordDownload();
-  showDownloadToast();
-
-  // Start the APK request just after the toast's tick appears. On Android, Chrome then shows
-  // its own "Download anyway?" prompt over the page, so the toast plays first.
-  setTimeout(() => {
-    const apk = document.createElement('a');
-    apk.href = btn.href;
-    apk.download = btn.download;
-    document.body.appendChild(apk);
-    apk.click();
-    apk.remove();
-  }, 2100);
-
-  setTimeout(() => {
-    btn.innerHTML = originalHTML;
-    downloadInProgress = false;
-  }, 3600);
+  const apk = document.createElement('a');
+  apk.href = btn.href;
+  apk.download = btn.download;
+  document.body.appendChild(apk);
+  apk.click();
+  apk.remove();
 }
 
 function closeDownloadDialog() {
@@ -38,7 +20,6 @@ function closeDownloadDialog() {
 
 function triggerDownload(e) {
   e.preventDefault();
-  if (downloadInProgress) return;
 
   const dialog = document.getElementById('download-dialog');
   if (dialog && typeof dialog.showModal === 'function') {
