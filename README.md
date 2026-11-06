@@ -7,7 +7,8 @@ Dawnly is an Android app that notices you're already up and turns your alarm off
 **[Visit the site →](https://dawnly-website.pages.dev)** · [Privacy policy](https://dawnly-website.pages.dev/privacy)
 
 <p align="center">
-  <img src="docs/images/website-desktop.png" width="720" alt="The Dawnly website on desktop, showing the headline, the download notice and a phone preview of the app">
+  <img src="docs/images/website-desktop.gif" width="560" alt="The Dawnly website on desktop, switching between dark and light mode">
+  <img src="docs/images/website-phone.gif" width="200" alt="The Dawnly website on a phone in dark mode: tapping Download APK, then Yes, download it">
 </p>
 
 ## Why this exists
@@ -59,25 +60,6 @@ migrations/             The database setup
 scripts/                The release script, which reads the APK and updates the page
 docs/                   How it works, and how to run it
 ```
-
-## Run it locally
-
-You need [Node.js](https://nodejs.org) 20 or newer.
-
-```bash
-npm install
-npm run db:migrate:local
-npm run dev
-```
-
-Then open [http://localhost:8788](http://localhost:8788).
-
-| Command | What it does |
-| --- | --- |
-| `npm run dev` | Run the site and the counter locally |
-| `npm run db:migrate:local` | Set up the local database (first time only) |
-| `npm run sync-apk` | Read the APK and update the version and size on the page |
-| `npm run deploy` | Sync the APK, then publish to Cloudflare |
 
 ## Releasing a new version
 
