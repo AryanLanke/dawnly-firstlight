@@ -1,0 +1,52 @@
+/* ============ Design tokens ============ */
+:root {
+  --wall: #F5F7FA;
+  --text: #090A0D;
+  --soft: rgba(9, 10, 13, 0.62);
+  --glass: rgba(255, 255, 255, 0.65);
+  --glass-strong: rgba(255, 255, 255, 0.88);
+  --glass-tint: rgba(255, 255, 255, 0.45);
+  --edge: rgba(255, 255, 255, 0.85);
+  --edge-soft: rgba(0, 0, 0, 0.06);
+  --hi: rgba(255, 255, 255, 0.95);
+  --lift: 0 16px 36px -4px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03);
+  --lift-sm: 0 6px 18px -2px rgba(0, 0, 0, 0.05);
+  --line: rgba(0, 0, 0, 0.07);
+  --track: rgba(0, 0, 0, 0.09);
+  --accent: #0A0A0E;
+  --accent-hover: #1E1F24;
+  --on-accent: #ffffff;
+  --star: #FFD24A;
+  --field: rgba(255, 255, 255, 0.8);
+  --phone-shadow: 0 32px 75px -15px rgba(0, 0, 0, 0.22), 0 10px 24px rgba(0, 0, 0, 0.08);
+  --notif-bg: rgba(255, 255, 255, 0.95);
+  --notif-text: #0E1E45;
+  --notif-soft: rgba(14, 30, 69, 0.65);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --wall: #070709;
+  --text: #F4F4F6;
+  --soft: rgba(244, 244, 246, 0.62);
+  --glass: rgba(18, 18, 22, 0.65);
+  --glass-strong: rgba(24, 24, 30, 0.85);
+  --glass-tint: rgba(255, 255, 255, 0.04);
+  --edge: rgba(255, 255, 255, 0.12);
+  --edge-soft: rgba(255, 255, 255, 0.06);
+  --hi: rgba(255, 255, 255, 0.18);
+  --lift: 0 20px 48px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --lift-sm: 0 10px 24px rgba(0, 0, 0, 0.4);
+  --line: rgba(255, 255, 255, 0.1);
+  --track: rgba(255, 255, 255, 0.14);
+  --accent: #FFFFFF;
+  --accent-hover: #E2E4E9;
+  --on-accent: #0A0A0E;
+  --star: #E2E8F0;
+  --field: rgba(255, 255, 255, 0.06);
+  --phone-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 255, 255, 0.04);
+  --notif-bg: #202226;
+  --notif-text: #FFFFFF;
+  --notif-soft: #9BA0A8;
+  color-scheme: dark;
+}

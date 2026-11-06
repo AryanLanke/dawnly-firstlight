@@ -1,8 +1,19 @@
 {
   "name": "dawnly-website",
+  "version": "1.6.5",
   "private": true,
+  "description": "Download site for the Dawnly Android app, hosted on Cloudflare Pages",
+  "license": "MIT",
+  "author": "Aryan Lanke",
+  "type": "module",
   "scripts": {
+    "dev": "wrangler pages dev public",
     "sync-apk": "node scripts/sync-apk.mjs",
-    "deploy": "node scripts/sync-apk.mjs && npx wrangler@latest pages deploy public --project-name dawnly-website --branch main"
+    "db:migrate:local": "wrangler d1 migrations apply dawnly-downloads --local",
+    "db:migrate:remote": "wrangler d1 migrations apply dawnly-downloads --remote",
+    "deploy": "node scripts/sync-apk.mjs && wrangler pages deploy public --project-name dawnly-website --branch main"
+  },
+  "devDependencies": {
+    "wrangler": "^4.158.0"
   }
 }

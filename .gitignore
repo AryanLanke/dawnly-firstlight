@@ -1,3 +1,7 @@
 .wrangler/
 .dev.vars
 node_modules/
+backups/
+*.log
+Thumbs.db
+.DS_Store

@@ -1,0 +1,89 @@
+/* ============ Atmospheric sky ============ */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateZ(0);
+  background: linear-gradient(180deg, #E2ECF8 0%, #EDF3FA 50%, #F5F7FA 100%);
+  transition: opacity 0.5s ease;
+}
+.sun {
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFF4D0 0%, rgba(255, 240, 190, 0.85) 28%, rgba(255, 243, 214, 0.35) 52%, rgba(255, 243, 214, 0) 72%);
+  filter: blur(18px);
+  pointer-events: none;
+  animation: sunPulse 14s ease-in-out infinite alternate;
+}
+@keyframes sunPulse {
+  0% { transform: scale(0.96); opacity: 0.85; }
+  100% { transform: scale(1.04); opacity: 0.98; }
+}
+.moon, .twinkle { display: none; }
+[data-theme="dark"] .sky {
+  background: radial-gradient(75% 50% at 85% 10%, rgba(35, 40, 52, 0.4), transparent 72%),
+              radial-gradient(60% 40% at 15% 85%, rgba(24, 26, 36, 0.35), transparent 75%),
+              #070709;
+}
+[data-theme="dark"] .sun { display: none; }
+[data-theme="dark"] .moon, [data-theme="dark"] .twinkle { display: block; }
+.moon {
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(235, 240, 252, 0.7) 0%, rgba(200, 215, 245, 0.2) 28%, rgba(200, 215, 245, 0) 70%);
+  filter: blur(18px);
+}
+.star {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 140px;
+  height: 1.5px;
+  border-radius: 2px;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, var(--star));
+  transform: rotate(145deg);
+  transform-origin: left;
+  animation: shoot var(--d, 8s) linear var(--w, 0s) infinite;
+}
+.star::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--star);
+  box-shadow: 0 0 10px 2px var(--star);
+}
+@keyframes shoot {
+  0% { opacity: 0; transform: rotate(145deg) translateX(0); }
+  4% { opacity: 0.9; }
+  26% { opacity: 0; transform: rotate(145deg) translateX(550px); }
+  100% { opacity: 0; }
+}
+.twinkle {
+  position: absolute;
+  width: 2.5px;
+  height: 2.5px;
+  border-radius: 50%;
+  background: #ffffff;
+  opacity: 0.6;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+  animation: tw 3.5s ease-in-out infinite alternate;
+}
+@keyframes tw { to { opacity: 0.15; transform: scale(0.6); } }
+@media (prefers-reduced-motion: reduce) {
+  .star, .twinkle, .sun { animation: none !important; }
+}

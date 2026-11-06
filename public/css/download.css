@@ -1,0 +1,163 @@
+/* Download CTA (phones) */
+.download-area {
+  margin-top: 26px;
+  text-align: center;
+}
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 17px 24px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: inherit;
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s, background-color 0.2s;
+}
+.btn-cta:hover {
+  transform: translateY(-2px);
+  background: var(--accent-hover);
+}
+.btn-cta:active { transform: scale(0.98); }
+.btn-cta svg { width: 20px; height: 20px; }
+.file-meta {
+  color: var(--soft);
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-top: 12px;
+}
+.download-count-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  margin-top: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.counter-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.34em;
+}
+.odometer {
+  display: inline-flex;
+  align-items: baseline;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.odometer-digit {
+  display: inline-block;
+  width: 0.62em;
+  height: 1.08em;
+  overflow: hidden;
+  text-align: center;
+}
+.odometer-digit > span {
+  display: block;
+  line-height: 1.08;
+}
+.odometer-digit.is-rolling > span {
+  animation: dialRoll 0.56s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.odometer-comma {
+  display: inline-block;
+  width: 0.25em;
+  text-align: center;
+}
+@keyframes dialRoll {
+  0% { opacity: 0.25; transform: translateY(80%); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Download confirmation */
+.download-dialog {
+  position: fixed;
+  inset: 0;
+  width: min(calc(100vw - 40px), 380px);
+  max-height: calc(100% - 32px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--edge);
+  border-radius: 24px;
+  background: var(--glass-strong);
+  color: var(--text);
+  box-shadow: var(--lift);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+}
+.download-dialog[open] {
+  animation: dialogIn 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.download-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+.download-dialog-card { padding: 24px; }
+.download-dialog h2 {
+  font-size: 1.12rem;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.download-dialog p {
+  margin-top: 10px;
+  color: var(--soft);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.download-dialog-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+.dialog-btn {
+  flex: 1;
+  padding: 13px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--field);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+.dialog-btn:active { transform: scale(0.98); }
+.dialog-btn-primary {
+  flex: 1.1;
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+@keyframes dialogIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .odometer-digit.is-rolling > span,
+  .download-dialog[open] { animation: none; }
+}
+
+/* Desktop callout (replaces download CTA on wide screens) */
+.desktop-callout-pill {
+  display: none;
+  padding: 16px 28px;
+  font-size: 1.02rem;
+  font-weight: 650;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
