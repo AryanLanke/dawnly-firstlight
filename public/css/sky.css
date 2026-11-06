@@ -87,3 +87,13 @@
 @media (prefers-reduced-motion: reduce) {
   .star, .twinkle, .sun { animation: none !important; }
 }
+
+/* Fixed positions for the stars and twinkles. Kept in CSS, not inline style attributes, for the Content-Security-Policy. */
+.star-1 { --x: 68%; --y: 12%; --d: 8.5s; }
+.star-2 { --x: 38%; --y: 28%; --d: 10s; --w: 3.2s; }
+.star-3 { --x: 88%; --y: 52%; --d: 9s; --w: 5.5s; }
+.twinkle-1 { left: 14%; top: 18%; animation-delay: 0s; }
+.twinkle-2 { left: 32%; top: 9%; animation-delay: 1.1s; }
+.twinkle-3 { left: 64%; top: 38%; animation-delay: 2.2s; }
+.twinkle-4 { left: 82%; top: 74%; animation-delay: 0.7s; }
+.twinkle-5 { left: 24%; top: 66%; animation-delay: 1.8s; }

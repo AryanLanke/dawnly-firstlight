@@ -44,7 +44,9 @@ D1 holds one row with one integer. No IP address, user agent, cookie, or timesta
 | Path | Responsibility |
 |---|---|
 | `public/index.html` | Landing page markup only |
-| `public/css/*.css` | One file per section; `desktop.css` loads last and holds the wide-screen overrides |
+| `public/css/*.css` | One file per section; `desktop.css` loads last and holds the wide-screen overrides; `fonts.css` declares the self-hosted font |
+| `public/fonts/` | Self-hosted Plus Jakarta Sans (woff2) |
+| `public/js/theme-init.js` | Applies the saved theme before first paint (blocking, in `<head>`) |
 | `public/js/theme.js` | Light/dark toggle with view-transition crossfade |
 | `public/js/app-meta.js` | Fills version and size from the `app-*` meta tags |
 | `public/js/odometer.js` | Renders the rolling digits |
@@ -56,6 +58,10 @@ D1 holds one row with one integer. No IP address, user agent, cookie, or timesta
 | `server/download-stats.js` | The SQL for reading and incrementing the count |
 | `scripts/sync-apk.mjs` | Release script; helpers in `scripts/lib/` |
 
-The inline script at the top of `index.html` and `privacy.html` stays inline on purpose. It sets the saved theme before the first paint so the page doesn't flash the wrong colors.
+The theme script `public/js/theme-init.js` is loaded as a classic, blocking script in `<head>` (no `type="module"`, no `defer`). It sets the saved theme before the first paint so the page doesn't flash the wrong colors.
+
+## Content Security Policy
+
+`public/_headers` sends a strict CSP on every page: scripts, styles, fonts and connections are limited to `'self'`, with no inline script, inline style attributes, or inline event handlers. Keep it that way: put new JavaScript in `public/js/`, new styles in `public/css/`, and use classes instead of `style=""`. Fonts are served from `public/fonts/` and declared in `public/css/fonts.css`, so the page makes no requests to Google.
 
 `scripts/lib/update-index.mjs` edits `index.html` with regular expressions that match the `app-version`, `app-apk`, `app-size` meta tags and the `downloads/Dawnly-v….apk` link. Keep those lines in that shape.

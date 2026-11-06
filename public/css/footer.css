@@ -21,3 +21,5 @@ footer .made-by {
   transition: color 0.2s;
 }
 footer .made-by:hover { color: var(--text); }
+
+footer .footer-made { margin-top: 14px; }

@@ -6,16 +6,8 @@
 <title>Privacy policy · Dawnly</title>
 <meta name="description" content="Dawnly collects nothing. Read exactly what the app and this website do and don't store."/>
 <link rel="icon" href="images/logo.svg" type="image/svg+xml"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet"/>
-<script>
-(function () {
-  var t = null;
-  try { t = localStorage.getItem('dawnly-theme'); } catch (e) {}
-  document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
-})();
-</script>
+<link href="css/fonts.css" rel="stylesheet"/>
+<script src="js/theme-init.js"></script>
 <link href="css/tokens.css" rel="stylesheet"/>
 <link href="css/base.css" rel="stylesheet"/>
 <link href="css/sky.css" rel="stylesheet"/>
@@ -27,9 +19,9 @@
 <div aria-hidden="true" class="sky">
 <div class="sun"></div>
 <div class="moon"></div>
-<i class="star" style="--x:68%;--y:12%;--d:8.5s"></i>
-<i class="star" style="--x:38%;--y:28%;--d:10s;--w:3.2s"></i>
-<i class="star" style="--x:88%;--y:52%;--d:9s;--w:5.5s"></i>
+<i class="star star-1"></i>
+<i class="star star-2"></i>
+<i class="star star-3"></i>
 </div>
 
 <div class="wrap">
@@ -54,7 +46,7 @@
 <h2>This website</h2>
 <p>The site keeps exactly one piece of data: a single total number of downloads. When you confirm a download, that number goes up by one. It is not linked to you. No IP address, device information, or cookie is stored with it.</p>
 <p>Your light or dark theme choice is saved in your own browser (local storage) and never leaves your device.</p>
-<p>Fonts are loaded from Google Fonts, so Google receives a normal font request from your browser. The site is hosted on Cloudflare, which, like any host, processes ordinary request logs to deliver pages and protect against abuse.</p>
+<p>Fonts are served from this site, so your browser does not contact Google. The site is hosted on Cloudflare, which, like any host, processes ordinary request logs to deliver pages and protect against abuse.</p>
 </section>
 
 <section class="glass legal-card">

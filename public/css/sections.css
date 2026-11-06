@@ -204,3 +204,5 @@ p.section-subtitle {
   color: var(--text);
   opacity: 0.85;
 }
+
+.reminder-sample-time { font-size: 0.8rem; font-weight: 700; }

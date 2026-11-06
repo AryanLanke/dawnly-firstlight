@@ -13,6 +13,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - Same-origin check on `POST /api/downloads`: requests from other websites are rejected with 403.
 - Pinned `wrangler` dev dependency, plus `dev` and `db:migrate:*` npm scripts.
 
+### Security
+- Content-Security-Policy on every page: no inline scripts, styles or event handlers, and connections only to the same site.
+- Plus Jakarta Sans is self-hosted from `public/fonts/`, so the page no longer loads anything from Google.
+
 ### Fixed
 - `POST /api/downloads` now also rejects requests with no `Origin` header, so plain scripts can't bump the counter.
 - `sync-apk` copies the new APK and updates `index.html` before deleting old APKs, so a failed run no longer removes the live build.
@@ -30,6 +34,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Deploys use the pinned local Wrangler instead of `wrangler@latest`.
 
 ### Removed
+- Right-click on the "Made by Aryan Lanke" link no longer opens LinkedIn.
 - `progress.md`, replaced by the docs above.
 - Local `.wrangler/` cache and a stale `.gitignore` rule.
 
