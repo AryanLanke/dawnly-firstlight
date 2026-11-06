@@ -77,6 +77,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.55s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
 body {
   font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   color: var(--text);
@@ -1382,11 +1389,22 @@ No ads
 </dialog>
 
 <script>
+function applyTheme(next) {
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('dawnly-theme', next); } catch (e) {}
+}
+
 function flip() {
   const root = document.documentElement;
   const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  root.setAttribute('data-theme', next);
-  try { localStorage.setItem('dawnly-theme', next); } catch (e) {}
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduce && typeof document.startViewTransition === 'function') {
+    document.startViewTransition(function () { applyTheme(next); });
+    return;
+  }
+
+  applyTheme(next);
 }
 
 let downloadInProgress = false;
