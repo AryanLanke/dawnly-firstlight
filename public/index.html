@@ -35,7 +35,8 @@
   --accent: #0A0A0E;
   --accent-hover: #1E1F24;
   --on-accent: #ffffff;
-  --star: #EAAE35;
+  --star: #FFD24A;
+  --star-glow: rgba(255, 199, 52, 0.62);
   --field: rgba(255, 255, 255, 0.8);
   --phone-shadow: 0 32px 75px -15px rgba(0, 0, 0, 0.22), 0 10px 24px rgba(0, 0, 0, 0.08);
   --notif-bg: rgba(255, 255, 255, 0.95);
@@ -62,6 +63,7 @@
   --accent-hover: #E2E4E9;
   --on-accent: #0A0A0E;
   --star: #E2E8F0;
+  --star-glow: rgba(226, 232, 240, 0.34);
   --field: rgba(255, 255, 255, 0.06);
   --phone-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 255, 255, 0.04);
   --notif-bg: #202226;
@@ -145,6 +147,7 @@ body {
   background: linear-gradient(90deg, transparent, var(--star));
   transform: rotate(145deg);
   transform-origin: left;
+  filter: drop-shadow(0 0 4px var(--star-glow)) drop-shadow(0 0 9px var(--star-glow));
   animation: shoot var(--d, 8s) linear var(--w, 0s) infinite;
 }
 .star::after {
@@ -156,7 +159,7 @@ body {
   height: 5px;
   border-radius: 50%;
   background: var(--star);
-  box-shadow: 0 0 10px 2px var(--star);
+  box-shadow: 0 0 8px 2px var(--star), 0 0 20px 7px var(--star-glow);
 }
 @keyframes shoot {
   0% { opacity: 0; transform: rotate(145deg) translateX(0); }
@@ -1232,7 +1235,7 @@ Version 1.5.4 · Android 8.0+
 <p>Only in a custom window you pick, like 30 minutes before. Nothing runs in the background all night.</p>
 </div>
 <div class="feature-card glass">
-<h3>Automatically</h3>
+<h3>Dismisses automatically</h3>
 <p>Screen use, steps, or movement show you're up. Dawnly dismisses the alarm and notifies you—no tap needed.</p>
 </div>
 </div>
@@ -1262,7 +1265,7 @@ Version 1.5.4 · Android 8.0+
 <span class="reminder-chip">30 min</span>
 <span class="reminder-chip">1 hr</span>
 <span class="reminder-chip">Custom</span>
-<span class="reminder-chip">Custom sound</span>
+<span class="reminder-chip">Bubble</span>
 </div>
 </div>
 </div>
