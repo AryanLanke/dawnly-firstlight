@@ -44,34 +44,6 @@ Installing from a file is a bit more work, and Android will warn you because the
 | Hosting | [Cloudflare Pages](https://pages.cloudflare.com) |
 | Tooling | [Wrangler](https://developers.cloudflare.com/workers/wrangler/) for local dev and deploys, plus a small Node script that reads the APK |
 
-## How it's organised
-
-Big files get split into small ones, so every file does one thing.
-
-```
-public/                 Everything the site serves
-  index.html            The page itself (markup only)
-  privacy.html          The privacy policy
-  css/                  One small stylesheet per section of the page
-  js/                   Small modules: theme, version info, counter, download dialog
-  images/               The logo and app screenshots
-  downloads/            The APK (always exactly one file)
-  _headers              Makes the APK download correctly on Android
-functions/api/          The counter's API route
-server/                 Helpers that route uses
-migrations/             The database setup
-scripts/                The release script, which reads the APK and updates the page
-docs/                   How it works, and how to run it
-```
-
-## Releasing a new version
-
-1. Build the signed release APK.
-2. Drop it into `public/downloads/`. The file name doesn't matter.
-3. Run `npm run deploy`.
-
-The script reads the version from the APK, renames the file, removes the old one, updates the page and publishes. The full runbook (resetting the counter, backups, troubleshooting) is in [docs/operations.md](docs/operations.md).
-
 ## Feedback
 
 Found a bug, or have a thought? Email me at [redischarmender@gmail.com](mailto:redischarmender@gmail.com?subject=Dawnly%20feedback), or [open an issue](https://github.com/AryanLanke/dawnly-firstlight/issues/new). For security problems, see [SECURITY.md](SECURITY.md).
