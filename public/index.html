@@ -365,6 +365,112 @@ h1.headline {
   font-weight: 600;
   letter-spacing: 0.01em;
 }
+.counter-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.34em;
+}
+.odometer {
+  display: inline-flex;
+  align-items: baseline;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.odometer-digit {
+  display: inline-block;
+  width: 0.62em;
+  height: 1.08em;
+  overflow: hidden;
+  text-align: center;
+}
+.odometer-digit > span {
+  display: block;
+  line-height: 1.08;
+}
+.odometer-digit.is-rolling > span {
+  animation: dialRoll 0.56s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.odometer-comma {
+  display: inline-block;
+  width: 0.25em;
+  text-align: center;
+}
+@keyframes dialRoll {
+  0% { opacity: 0.25; transform: translateY(80%); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Download confirmation */
+.download-dialog {
+  position: fixed;
+  inset: 0;
+  width: min(calc(100vw - 40px), 380px);
+  max-height: calc(100% - 32px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--edge);
+  border-radius: 24px;
+  background: var(--glass-strong);
+  color: var(--text);
+  box-shadow: var(--lift);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+}
+.download-dialog[open] {
+  animation: dialogIn 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.download-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+.download-dialog-card { padding: 24px; }
+.download-dialog h2 {
+  font-size: 1.12rem;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.download-dialog p {
+  margin-top: 10px;
+  color: var(--soft);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.download-dialog-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+.dialog-btn {
+  flex: 1;
+  padding: 13px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--field);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+.dialog-btn:active { transform: scale(0.98); }
+.dialog-btn-primary {
+  flex: 1.25;
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+@keyframes dialogIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .odometer-digit.is-rolling > span,
+  .download-dialog[open] { animation: none; }
+}
 
 /* Desktop callout (replaces download CTA on wide screens) */
 .desktop-callout-pill {
@@ -1037,8 +1143,11 @@ Download APK
 </a>
 <p class="file-meta">Version 1.5.4 · Android 8.0+ · 3.2 MB · APK file</p>
 <div>
-<span class="download-count-pill glass-pill">
-<span><b id="live-counter">0</b> downloads</span>
+<span class="download-count-pill glass-pill" id="download-count" aria-live="polite" aria-label="0 downloads">
+<span class="counter-line">
+<span class="odometer" id="live-counter" aria-hidden="true"><span class="odometer-digit"><span>0</span></span></span>
+<span aria-hidden="true" id="download-noun">downloads</span>
+</span>
 </span>
 </div>
 </div>
@@ -1261,6 +1370,17 @@ No ads
 </footer>
 </div>
 
+<dialog class="download-dialog" id="download-dialog" aria-labelledby="download-dialog-title">
+<div class="download-dialog-card">
+<h2 id="download-dialog-title">Download Dawnly 1.5.4?</h2>
+<p>Android may warn you because this is an APK. Continue only if you trust Dawnly.</p>
+<div class="download-dialog-actions">
+<button class="dialog-btn" type="button" id="download-cancel">Cancel</button>
+<button class="dialog-btn dialog-btn-primary" type="button" id="download-confirm">Download anyway</button>
+</div>
+</div>
+</dialog>
+
 <script>
 function flip() {
   const root = document.documentElement;
@@ -1270,9 +1390,42 @@ function flip() {
 }
 
 let downloadInProgress = false;
+let currentDownloadCount = null;
 
-function setDownloadCount(count) {
-  document.getElementById('live-counter').textContent = Number(count).toLocaleString();
+function setDownloadCount(count, animate) {
+  const formatted = Number(count).toLocaleString('en-US');
+  const previous = currentDownloadCount === null ? '' : Number(currentDownloadCount).toLocaleString('en-US');
+  const odometer = document.getElementById('live-counter');
+  const pill = document.getElementById('download-count');
+
+  odometer.innerHTML = '';
+  for (let i = 0; i < formatted.length; i += 1) {
+    const char = formatted[i];
+
+    if (char === ',') {
+      const comma = document.createElement('span');
+      comma.className = 'odometer-comma';
+      comma.textContent = ',';
+      odometer.appendChild(comma);
+      continue;
+    }
+
+    const digit = document.createElement('span');
+    digit.className = 'odometer-digit';
+    if (animate && currentDownloadCount !== null && previous[i] !== char) {
+      digit.classList.add('is-rolling');
+    }
+
+    const value = document.createElement('span');
+    value.textContent = char;
+    digit.appendChild(value);
+    odometer.appendChild(digit);
+  }
+
+  currentDownloadCount = Number(count);
+  const noun = document.getElementById('download-noun');
+  if (noun) noun.textContent = Number(count) === 1 ? 'download' : 'downloads';
+  pill.setAttribute('aria-label', formatted + ' ' + (Number(count) === 1 ? 'download' : 'downloads'));
 }
 
 async function loadDownloadCount() {
@@ -1282,30 +1435,11 @@ async function loadDownloadCount() {
     });
     if (!response.ok) return;
     const data = await response.json();
-    setDownloadCount(data.count);
+    setDownloadCount(data.count, false);
   } catch (e) {}
 }
 
-async function triggerDownload(e) {
-  e.preventDefault();
-  if (downloadInProgress) return;
-  downloadInProgress = true;
-
-  const btn = document.getElementById('download-btn');
-  const originalHTML = btn.innerHTML;
-  const apk = document.createElement('a');
-  apk.href = btn.href;
-  apk.download = 'Dawnly-v1.5.4.apk';
-  document.body.appendChild(apk);
-  apk.click();
-  apk.remove();
-
-  btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"></polyline></svg> Download started';
-  setTimeout(() => {
-    btn.innerHTML = originalHTML;
-    downloadInProgress = false;
-  }, 2200);
-
+async function recordDownload() {
   try {
     const response = await fetch('api/downloads', {
       method: 'POST',
@@ -1313,8 +1447,66 @@ async function triggerDownload(e) {
     });
     if (!response.ok) return;
     const data = await response.json();
-    setDownloadCount(data.count);
+    setDownloadCount(data.count, true);
   } catch (e) {}
+}
+
+function startDownload() {
+  if (downloadInProgress) return;
+  downloadInProgress = true;
+
+  const btn = document.getElementById('download-btn');
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"></polyline></svg> Download started';
+
+  recordDownload();
+
+  setTimeout(() => {
+    const apk = document.createElement('a');
+    apk.href = btn.href;
+    apk.download = 'Dawnly-v1.5.4.apk';
+    document.body.appendChild(apk);
+    apk.click();
+    apk.remove();
+  }, 620);
+
+  setTimeout(() => {
+    btn.innerHTML = originalHTML;
+    downloadInProgress = false;
+  }, 2400);
+}
+
+function closeDownloadDialog() {
+  const dialog = document.getElementById('download-dialog');
+  if (dialog && dialog.open) dialog.close();
+}
+
+function triggerDownload(e) {
+  e.preventDefault();
+  if (downloadInProgress) return;
+
+  const dialog = document.getElementById('download-dialog');
+  if (dialog && typeof dialog.showModal === 'function') {
+    if (!dialog.open) dialog.showModal();
+    return;
+  }
+
+  if (window.confirm('Android may warn you because this is an APK. Download anyway?')) {
+    startDownload();
+  }
+}
+
+document.getElementById('download-cancel').addEventListener('click', closeDownloadDialog);
+document.getElementById('download-confirm').addEventListener('click', function () {
+  closeDownloadDialog();
+  startDownload();
+});
+
+const downloadDialog = document.getElementById('download-dialog');
+if (downloadDialog) {
+  downloadDialog.addEventListener('click', function (e) {
+    if (e.target === downloadDialog) closeDownloadDialog();
+  });
 }
 
 loadDownloadCount();
