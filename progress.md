@@ -24,7 +24,7 @@ The homepage, APK headers, and D1-backed download counter were verified in produ
 - Added the Cloudflare Pages Function at `functions/api/downloads.js`.
 - Added the D1 migration at `migrations/0001_create_download_stats.sql`.
 - The counter is global and starts at 0. Every confirmed download start increments it atomically, including repeat downloads after an uninstall.
-- Added a site-controlled "Download anyway" confirmation before the APK request; the count rolls upward one digit step at a time, then the native download starts.
+- Added a site-controlled "Download anyway" confirmation before the APK request; the copy is intentionally playful, the count rolls upward one digit step at a time, then the native download starts.
 - Removed the four obsolete HTML variants, unused cloud artwork, and temporary test caches.
 - Kept the local preview server available at `http://localhost:4173`.
 - Stopped feature development for this release.
