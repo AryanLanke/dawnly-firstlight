@@ -17,7 +17,7 @@ The homepage, APK headers, and D1-backed download counter were verified in produ
 - Finalized the responsive site in `public/index.html`.
 - Dark mode is the default; a visitor's saved light or dark choice is remembered.
 - The sky stays fixed during scrolling in both themes.
-- Clouds were removed. Day mode now uses black shooting stars with the same staggered timing as night mode.
+- Clouds were removed. Day mode now uses golden-yellow shooting stars that echo the sun, with the same staggered timing as night mode.
 - Phone screenshots are stored locally at 719 x 1600.
 - Replaced the mislabeled 0.1.0 prototype with the signed Dawnly 1.5.4 release at `public/downloads/Dawnly-v1.5.4.apk`.
 - Verified the APK: versionCode 14, package `com.aryanlanke.dawnly`, minimum Android 8.0, 3,232,180 bytes (3.2 MB), signed by Aryan Lanke.
