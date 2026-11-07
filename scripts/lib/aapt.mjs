@@ -41,7 +41,7 @@ export function findAapt() {
   try {
     execFileSync('aapt', ['version'], { stdio: 'ignore' });
     return 'aapt';
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -53,7 +53,7 @@ export function readBadging(apkPath, aapt) {
     const match = output.match(/package: name='([^']+)' versionCode='([^']+)' versionName='([^']+)'/);
     if (!match) return null;
     return { packageName: match[1], versionCode: match[2], versionName: match[3] };
-  } catch (error) {
+  } catch {
     return null;
   }
 }
