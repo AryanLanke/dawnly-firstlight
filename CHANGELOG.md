@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Fixed
+- The operations guide's `aapt` fallback example names the current APK (1.7.9), and its phone-testing example uses a placeholder address instead of a personal LAN IP.
+- Removed unused `catch` bindings in `scripts/lib/aapt.mjs`.
+
+## [1.7.9] - 2026-11-06
+
+Ships Dawnly app 1.7.9 (versionCode 27). The site's package version matches it. Earlier app builds since 1.6.5 were 1.7.2, 1.7.5, 1.7.7 and 1.7.8; each one replaced the APK before it on the site.
+
 ### Added
 - Smooth dark-mode GIFs of the site on desktop and phone in the README.
 - README, MIT license, changelog, security policy, and architecture and operations guides.

@@ -16,7 +16,7 @@ The script `scripts/sync-apk.mjs` then:
 - copies the file to `public/downloads/Dawnly-v<version>.apk` and deletes any other APK in that folder;
 - writes the version, file name and size into the `app-version`, `app-apk` and `app-size` meta tags in `public/index.html`, and updates the download link.
 
-If `aapt` isn't installed, it falls back to the version in the file name (for example `Dawnly-v1.6.5.apk`). Set `AAPT_PATH` or `ANDROID_HOME` if it can't find `aapt`.
+If `aapt` isn't installed, it falls back to the version in the file name (for example `Dawnly-v1.7.9.apk`). Set `AAPT_PATH` or `ANDROID_HOME` if it can't find `aapt`.
 
 Run `npm run sync-apk` on its own to update the page without deploying. Commit the new APK and `index.html` afterwards.
 
@@ -48,7 +48,7 @@ npm run dev        # http://localhost:8788
 
 The local database lives in `.wrangler/` and is git-ignored. Delete that folder any time to reset it. It is recreated on the next run.
 
-To test on a phone, use the PC's LAN address (for example `http://192.168.1.8:8788`). `localhost` on a phone means the phone itself, and the LAN address can change.
+To test on a phone, use the PC's LAN address (open `http://<your-PC-LAN-IP>:8788`). `localhost` on a phone means the phone itself, and the LAN address can change.
 
 ## Limits and costs
 
