@@ -1,6 +1,6 @@
 {
   "name": "dawnlyapp",
-  "version": "1.7.9",
+  "version": "1.8.0",
   "private": true,
   "description": "Download site for the Dawnly Android app, hosted on Cloudflare Pages",
   "license": "MIT",
